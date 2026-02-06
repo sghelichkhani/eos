@@ -7,60 +7,31 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build:
+  install:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Install native dependencies
+    - name: Install build tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y \
-          build-essential \
-          libopenmpi-dev \
-          openmpi-bin \
-          libudunits2-dev
+        sudo apt-get install -y build-essential libexpat1-dev
 
-    - name: Build LPSolve native library
+    - name: Run install-minimal.sh (no MPI)
       run: |
-        make -C LPSolve CC=cc CONF=Release ARCH=linux-x64
+        chmod +x install-minimal.sh
+        ./install-minimal.sh --prefix=${{ github.workspace }}/_install --no-mpi --jobs=$(nproc)
 
-    - name: Build MPIGlue native library
+    - name: Run dotnet tests
       run: |
-        make -C MPIGlue CC=mpicc CONF=Release ARCH=linux-x64
+        export PATH="${{ github.workspace }}/_build/dotnet:$PATH"
+        export DOTNET_ROOT="${{ github.workspace }}/_build/dotnet"
+        export LD_LIBRARY_PATH="${{ github.workspace }}/_install/lib/eos"
+        dotnet test EoS.sln -c Release --verbosity normal --framework net8.0
 
-    - name: Restore .NET dependencies
-      run: dotnet restore EoS.sln
-
-    - name: Build solution
-      run: dotnet build EoS.sln -c Release --no-restore
-
-    - name: Copy native libraries for tests
+    - name: Run integration test (opti+prop pipeline)
       run: |
-        # Find all test output directories and copy native libs there
-        for testdir in EoS.*.Test/bin/Release/net8.0; do
-          if [ -d "$testdir" ]; then
-            cp LPSolve/bin/Release/linux-x64/liblpsolve55.so "$testdir/" 2>/dev/null || true
-            cp MPIGlue/bin/Release/linux-x64/libmpiglue.so "$testdir/" 2>/dev/null || true
-          fi
-        done
-
-    - name: Run tests
-      run: dotnet test EoS.sln -c Release --no-build --verbosity normal --framework net8.0
-      env:
-        LD_LIBRARY_PATH: ${{ github.workspace }}/LPSolve/bin/Release/linux-x64:${{ github.workspace }}/MPIGlue/bin/Release/linux-x64
-
-    - name: Upload native libraries as artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: native-libraries-linux-x64
-        path: |
-          LPSolve/bin/Release/linux-x64/liblpsolve55.so
-          MPIGlue/bin/Release/linux-x64/libmpiglue.so
+        chmod +x tests/integration-test.sh
+        tests/integration-test.sh ${{ github.workspace }}/_install/bin/eos
