@@ -70,7 +70,9 @@ echo "==> Running prop (SLB21, reading opti grid, rho+vp&vs)..."
 
 "$EOS_BIN" prop -db=SLB21 \
     -x="$OPTI_OUT" \
-    -o=p,T,rho,vp\&vs \
+    -P=0Pa -toP=140e9Pa -nP=5 \
+    -T=300K -toT=3000K -nT=5 \
+    -o=p,T,rho,'vp&vs' \
     2>"$TMPDIR/prop.err" \
     > "$PROP_OUT"
 
