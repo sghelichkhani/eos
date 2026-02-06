@@ -2,12 +2,13 @@
 set -euo pipefail
 
 # ──────────────────────────────────────────────────────────────
-# install-minimal.sh — Fully native, self-contained build
+# install-minimal.sh — Minimal build with few system dependencies
 #
-# Downloads and builds ALL dependencies locally. No system
-# packages needed beyond a C compiler and basic build tools.
+# Downloads and builds .NET SDK, UDUNITS2, and lp_solve locally.
+# MPI support uses the system MPI (OpenMPI/MPICH) if available.
 #
 # Prerequisites: cc (clang/gcc), make, curl, tar
+# Optional:      mpicc (for MPI support)
 #
 # Usage:
 #   ./install-minimal.sh                        # install to ~/.local
@@ -23,7 +24,6 @@ BUILD_DIR="$SCRIPT_DIR/_build"
 # ── Dependency versions ─────────────────────────────────────────
 DOTNET_VERSION="8.0"
 UDUNITS_VERSION="2.2.28"
-OPENMPI_VERSION="5.0.5"
 
 # ── Defaults ────────────────────────────────────────────────────
 PREFIX="$HOME/.local"
@@ -41,11 +41,11 @@ for arg in "$@"; do
         --help|-h)
             echo "Usage: $0 [--prefix=DIR] [--no-mpi] [--jobs=N] [--clean]"
             echo ""
-            echo "Builds all dependencies natively from source:"
-            echo "  .NET SDK $DOTNET_VERSION, UDUNITS2 $UDUNITS_VERSION, OpenMPI $OPENMPI_VERSION"
-            echo "  lp_solve 5.5 (bundled), mpiglue (bundled)"
+            echo "Builds dependencies from source, uses system MPI if available:"
+            echo "  .NET SDK $DOTNET_VERSION, UDUNITS2 $UDUNITS_VERSION, lp_solve 5.5 (bundled)"
+            echo "  MPI support requires system mpicc (e.g. OpenMPI, MPICH)"
             echo ""
-            echo "Only requires: cc, make, curl, tar"
+            echo "Only requires: cc, make, curl, tar (+ mpicc for MPI support)"
             exit 0
             ;;
         *) echo "Unknown option: $arg" >&2; exit 1 ;;
@@ -132,39 +132,19 @@ else
 fi
 
 # ══════════════════════════════════════════════════════════════════
-# PHASE 3: Build OpenMPI from source (optional)
+# PHASE 3: Detect system MPI (optional)
 # ══════════════════════════════════════════════════════════════════
-MPI_PREFIX="$BUILD_DIR/openmpi"
-
 if [[ "$BUILD_MPI" == true ]]; then
-    if [[ -x "$MPI_PREFIX/bin/mpicc" ]]; then
-        echo "==> OpenMPI already built, skipping..."
+    if command -v mpicc &>/dev/null; then
+        MPICC="$(command -v mpicc)"
+        echo "==> Found system MPI: $MPICC"
+        echo "    $($MPICC --showme:version 2>/dev/null || $MPICC -show 2>/dev/null || echo '(version unknown)')"
     else
-        echo "==> Building OpenMPI $OPENMPI_VERSION (this takes a few minutes)..."
-        OPENMPI_SRC="$BUILD_DIR/openmpi-$OPENMPI_VERSION"
-        OPENMPI_TAR="$BUILD_DIR/openmpi-$OPENMPI_VERSION.tar.gz"
-        OPENMPI_MAJOR="${OPENMPI_VERSION%%.*}"
-        OPENMPI_MINOR="v${OPENMPI_VERSION%.*}"
-
-        if [[ ! -f "$OPENMPI_TAR" ]]; then
-            curl -sSL "https://download.open-mpi.org/release/open-mpi/$OPENMPI_MINOR/openmpi-$OPENMPI_VERSION.tar.gz" \
-                -o "$OPENMPI_TAR"
-        fi
-
-        tar xzf "$OPENMPI_TAR" -C "$BUILD_DIR"
-        cd "$OPENMPI_SRC"
-        ./configure \
-            --prefix="$MPI_PREFIX" \
-            --disable-mpi-fortran \
-            --enable-shared \
-            --disable-static
-        make -j"$JOBS"
-        make install
-        cd "$SCRIPT_DIR"
-        echo "    OpenMPI installed to $MPI_PREFIX"
+        echo "==> WARNING: mpicc not found, building without MPI support."
+        echo "    Install OpenMPI or MPICH to enable MPI, or use --no-mpi to silence this."
+        BUILD_MPI=false
+        MPICC=""
     fi
-    export PATH="$MPI_PREFIX/bin:$PATH"
-    MPICC="$MPI_PREFIX/bin/mpicc"
 else
     echo "==> Skipping MPI (--no-mpi)"
     MPICC=""
@@ -207,18 +187,9 @@ echo "==> Assembling native libraries..."
 # lp_solve
 cp "$SCRIPT_DIR/LPSolve/bin/Release/$RID/liblpsolve55.$LIB_EXT" "$PUBLISH_DIR/"
 
-# mpiglue
+# mpiglue (links against system MPI at runtime)
 if [[ "$BUILD_MPI" == true ]]; then
     cp "$SCRIPT_DIR/MPIGlue/bin/Release/$RID/libmpiglue.$LIB_EXT" "$PUBLISH_DIR/"
-
-    # Also copy MPI runtime libraries so it's fully self-contained
-    if [[ "$PLATFORM" == "osx" ]]; then
-        cp "$MPI_PREFIX"/lib/libmpi*.dylib "$PUBLISH_DIR/" 2>/dev/null || true
-        cp "$MPI_PREFIX"/lib/libopen-*.dylib "$PUBLISH_DIR/" 2>/dev/null || true
-    else
-        cp "$MPI_PREFIX"/lib/libmpi*.so* "$PUBLISH_DIR/" 2>/dev/null || true
-        cp "$MPI_PREFIX"/lib/libopen-*.so* "$PUBLISH_DIR/" 2>/dev/null || true
-    fi
 fi
 
 # udunits2 library + XML database
@@ -285,8 +256,7 @@ echo "    .NET Runtime   $(dotnet --version)"
 echo "    UDUNITS2       $UDUNITS_VERSION"
 echo "    lp_solve       5.5.2.0 (bundled)"
 if [[ "$BUILD_MPI" == true ]]; then
-    echo "    OpenMPI        $OPENMPI_VERSION"
-    echo "    mpiglue        (bundled)"
+    echo "    mpiglue        (bundled, linked against system MPI)"
 fi
 echo ""
 echo "  Build cache: $BUILD_DIR"
