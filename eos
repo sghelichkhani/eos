@@ -1,0 +1,18 @@
+#!/bin/bash
+# MMA-EoS launcher script for macOS
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Detect architecture
+if [[ $(uname -m) == "arm64" ]]; then
+    ARCH="osx-arm64"
+else
+    ARCH="osx-x64"
+fi
+
+PUBLISH_DIR="$SCRIPT_DIR/EoS.CommandLineTool/bin/Release/net8.0/$ARCH/publish"
+
+# For self-contained .NET apps, help find the runtime libraries
+export DYLD_LIBRARY_PATH="$PUBLISH_DIR:$DYLD_LIBRARY_PATH"
+unset DOTNET_ROOT
+
+exec "$PUBLISH_DIR/eos" "$@"

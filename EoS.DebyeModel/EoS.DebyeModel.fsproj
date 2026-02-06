@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\EoS.snk</AssemblyOriginatorKeyFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <Optimize>false</Optimize>
+    <Tailcalls>true</Tailcalls>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="DebyeSolid.fs" />
+    <Compile Include="LandauModification.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SLB08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SLB11.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SLB21.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EoS.Core\EoS.Core.fsproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Product>EoS</Product>
+    <Description>Birch-Murnaghan-Mie-Debye-Grüneisen model of solids</Description>
+    <Copyright>Copyright ⓒ 2009-2025 Thomas Chust; Bayerisches Geoinstitut, Bayreuth; Ludwig-Maximilians-Universität, München</Copyright>
+    <Version>2.1.0</Version>
+    <Authors>Murphy</Authors>
+    <PackageTags>f#;fsharp;eos;equation;state;mineral;physics;thermodynamics;simulation;gibbs;energy;minimization;optimization</PackageTags>
+    <PackageProjectUrl>https://chust.org/repos/eos/</PackageProjectUrl>
+    <PackageLicenseUrl>https://chust.org/repos/eos/doc/tip/LICENSE.txt</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+</Project>

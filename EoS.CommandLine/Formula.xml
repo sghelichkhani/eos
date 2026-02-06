@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This file is part of EoS
+  Copyright (c) 2009-2025 Thomas Chust
+                2009-2017 Bayerisches Geoinstitut, Bayreuth
+                2009-2017 Ludwig-Maximilians-Universität, München
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<module xmlns="http://chust.org/eos" id="Formula">
+  <blurb>
+    Pre-defined chemical compositions.
+    Pyrolite compositions based on
+    Workman, R. K.; Hart, S. R.
+    "Major and trace element composition of the depleted MORB mantle."
+    Earth and Planetary Science Letters, 2005, 231(1-2), 53-72
+    Bulk oceanic crust and depleted mantle compositions based on
+    Chemia, Z.; Dolejš, D.; Steinle-Neumann, G.
+    "Thermal effects of variable material properties and metamorphic
+    reactions in a three-component subducting slab."
+    Journal of Geophysical Research, 2015, 120, 6823-6845
+  </blurb>
+
+  <!--
+    For the CFMAS compositions, Na2O is removed. For the FMAS
+    compositions, the CaO component is distributed to the other divalent
+    oxides MgO and FeO, maintaining their ratio. For the CFMS systems,
+    trivalent Al2O3 is replaced by an equal amount of SiO2 and the
+    divalent oxides MgO, FeO and CaO, again maintaining the ratios among
+    the latter. For the FMS systems, the CaO component of CFMS is
+    distributed between MgO and FeO such that their ratio remains the
+    same. For the MS system, FeO is completely replaced by MgO.
+  -->
+  <formula id="pyrolite/ncfmas">
+    (MgO)1.2878(FeO)0.1594(CaO)0.0759(Al2O3)0.0573(Na2O)0.0028(SiO2)
+  </formula>
+  <formula id="pyrolite/cfmas">
+    (MgO)1.2878(FeO)0.1594(CaO)0.0759(Al2O3)0.0573(SiO2)
+  </formula>
+  <formula id="pyrolite/fmas">
+    (MgO)1.3553(FeO)0.1678(Al2O3)0.0573(SiO2)
+  </formula>
+  <formula id="pyrolite/cfms">
+    (MgO)1.2755(FeO)0.1579(CaO)0.0752(SiO2)
+  </formula>
+  <formula id="pyrolite/fms">
+    (MgO)1.3424(FeO)0.1662(SiO2)
+  </formula>
+  <formula id="pyrolite/ms">
+    (MgO)1.5085(SiO2)
+  </formula>
+
+  <formula id="bulk-oceanic-crust/ncfmas">
+    (MgO)0.2919(FeO)0.1274(CaO)0.2781(Al2O3)0.2007(Na2O)0.0340(SiO2)
+  </formula>
+  <formula id="bulk-oceanic-crust/cfmas">
+    (MgO)0.2919(FeO)0.1274(CaO)0.2781(Al2O3)0.2007(SiO2)
+  </formula>
+  <formula id="bulk-oceanic-crust/fmas">
+    (MgO)0.4855(FeO)0.2119(Al2O3)0.2007(SiO2)
+  </formula>
+  <formula id="bulk-oceanic-crust/cfms">
+    (MgO)0.3035(FeO)0.1325(CaO)0.2891(SiO2)
+  </formula>
+  <formula id="bulk-oceanic-crust/fms">
+    (MgO)0.5047(FeO)0.2203(SiO2)
+  </formula>
+  <formula id="bulk-oceanic-crust/ms">
+    (MgO)0.7250(SiO2)
+  </formula>
+
+  <formula id="depleted-mantle/cfmas">
+    (MgO)1.5371(FeO)0.1562(CaO)0.0272(Al2O3)0.0160(SiO2)
+  </formula>
+  <formula id="depleted-mantle/fmas">
+    (MgO)1.5618(FeO)0.1588(Al2O3)0.0160(SiO2)
+  </formula>
+  <formula id="depleted-mantle/cfms">
+    (MgO)1.5320(FeO)0.1557(CaO)0.0271(SiO2)
+  </formula>
+  <formula id="depleted-mantle/fms">
+    (MgO)1.5566(FeO)0.1582(SiO2)
+  </formula>
+  <formula id="depleted-mantle/ms">
+    (MgO)1.7148(SiO2)
+  </formula>
+</module>

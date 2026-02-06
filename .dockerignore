@@ -1,0 +1,12 @@
+.dockerignore
+.fossil-settings
+**/*~
+**/.*.sw?
+**/.vs
+**/.vscode
+**/.idea
+**/*.*proj.user
+**/bin
+**/obj
+doc
+NUnit.*

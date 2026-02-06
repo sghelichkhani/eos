@@ -1,0 +1,1022 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This file is part of EoS
+  Copyright (c) 2009-2025 Thomas Chust
+                2009-2017 Bayerisches Geoinstitut, Bayreuth
+                2009-2017 Ludwig-Maximilians-Universität, München
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<module xmlns="http://chust.org/eos" id="SLB08">
+  <blurb>
+    Thermodynamic dataset taken from
+    Xu, W.; Lithgow-Bertelloni, C.; Stixrude, L.; Ritsema, J.
+    "The effect of bulk composition and temperature on mantle seismic structure"
+    Earth and Planetary Science Letters, 2008, 275, 70-79
+  </blurb>
+
+  <let name="T0" unit="K">300.0</let>
+
+  <let name="allows-negative-components">False</let>
+  <let name="excludes-endmember-configuration-entropy">False</let>
+
+  <!--
+    Feldspar solution:
+    *  CaAl <-> NaSi coupled substitution on site 1 and 2
+    *  Al,Si ordered on site 2
+    *  Al,Si disorder on site 3 in albite
+    => no entropy contribution from site 1 and 2
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="plg">
+    <blurb>Feldspar</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="an">
+      <blurb>Anorthite</blurb>
+      <formula>(Ca)Al2Si2O8</formula>
+
+      <let name="F0" unit="J/mol">-4011.0e3</let>
+      <let name="V0" unit="m^3/mol">100.61e-6</let>
+      <let name="K0" unit="Pa">84.0e9</let>
+      <let name="K0_p" unit="1">4.0</let>
+      <let name="θ0" unit="K">752.0</let>
+      <let name="γ0" unit="1">0.39</let>
+      <let name="q0" unit="1">1.0</let>
+      <let name="G0" unit="Pa">40.0e9</let>
+      <let name="G0_p" unit="1">1.1</let>
+      <let name="η0" unit="1">1.6</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="ab">
+      <blurb>Albite</blurb>
+      <formula>(Na)AlSi3O8</formula>
+
+      <let name="F0" unit="J/mol">-3719.0e3</let>
+      <let name="V0" unit="m^3/mol">100.45e-6</let>
+      <let name="K0" unit="Pa">60.0e9</let>
+      <let name="K0_p" unit="1">4.0</let>
+      <let name="θ0" unit="K">714.0</let>
+      <let name="γ0" unit="1">0.57</let>
+      <let name="q0" unit="1">1.0</let>
+      <let name="G0" unit="Pa">36.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">1.0</let>
+    </phase>
+
+    <interaction unit="J/mol" value="26.0e3">
+      <phase ref="an" /><phase ref="ab" />
+    </interaction>
+  </phase>
+
+  <!--
+    Spinel solution:
+    *  Mg <-> Fe substitution
+    *  Mg,Al and Fe,Al ordered
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="sps">
+    <blurb>Spinel</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="sp">
+      <blurb>Spinel</blurb>
+      <formula>(Mg0.125Al0.875)8(Mg0.75Al0.25)4O16</formula>
+
+      <let name="F0" unit="J/mol">-8685.0e3</let>
+      <let name="V0" unit="m^3/mol">159.05e-6</let>
+      <let name="K0" unit="Pa">197.0e9</let>
+      <let name="K0_p" unit="1">5.7</let>
+      <let name="θ0" unit="K">873.0</let>
+      <let name="γ0" unit="1">1.02</let>
+      <let name="q0" unit="1">2.7</let>
+      <let name="G0" unit="Pa">108.0e9</let>
+      <let name="G0_p" unit="1">0.4</let>
+      <let name="η0" unit="1">2.7</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="hc">
+      <blurb>Hercynite</blurb>
+      <formula>(Fe0.125Al0.875)8(Fe0.75Al0.25)4O16</formula>
+
+      <let name="F0" unit="J/mol">-7316.0e3</let>
+      <let name="V0" unit="m^3/mol">163.37e-6</let>
+      <let name="K0" unit="Pa">209.0e9</let>
+      <let name="K0_p" unit="1">5.7</let>
+      <let name="θ0" unit="K">772.0</let>
+      <let name="γ0" unit="1">1.22</let>
+      <let name="q0" unit="1">2.7</let>
+      <let name="G0" unit="Pa">84.0e9</let>
+      <let name="G0_p" unit="1">0.4</let>
+      <let name="η0" unit="1">2.8</let>
+    </phase>
+
+    <interaction unit="J/mol" value="3.7e3">
+      <phase ref="sp" /><phase ref="hc" />
+    </interaction>
+  </phase>
+
+  <!--
+    Olivine solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="ol">
+    <blurb>Olivine</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="fo">
+      <blurb>Forsterite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <let name="F0" unit="J/mol">-2058.0e3</let>
+      <let name="V0" unit="m^3/mol">43.60e-6</let>
+      <let name="K0" unit="Pa">128.0e9</let>
+      <let name="K0_p" unit="1">4.2</let>
+      <let name="θ0" unit="K">809.0</let>
+      <let name="γ0" unit="1">0.99</let>
+      <let name="q0" unit="1">2.1</let>
+      <let name="G0" unit="Pa">82.0e9</let>
+      <let name="G0_p" unit="1">1.5</let>
+      <let name="η0" unit="1">2.3</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="fa">
+      <blurb>Fayalite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="F0" unit="J/mol">-1371.0e3</let>
+      <let name="V0" unit="m^3/mol">46.29e-6</let>
+      <let name="K0" unit="Pa">135.0e9</let>
+      <let name="K0_p" unit="1">4.2</let>
+      <let name="θ0" unit="K">619.0</let>
+      <let name="γ0" unit="1">1.06</let>
+      <let name="q0" unit="1">3.6</let>
+      <let name="G0" unit="Pa">51.0e9</let>
+      <let name="G0_p" unit="1">1.5</let>
+      <let name="η0" unit="1">1.0</let>
+    </phase>
+
+    <interaction unit="J/mol" value="4.5e3">
+      <phase ref="fo" /><phase ref="fa" />
+    </interaction>
+  </phase>
+
+  <!--
+    Wadsleyite solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="wa">
+    <blurb>Wadsleyite</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="mgwa">
+      <blurb>Mg-Wadsleyite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <let name="F0" unit="J/mol">-2032.0e3</let>
+      <let name="V0" unit="m^3/mol">40.52e-6</let>
+      <let name="K0" unit="Pa">169.0e9</let>
+      <let name="K0_p" unit="1">4.3</let>
+      <let name="θ0" unit="K">853.0</let>
+      <let name="γ0" unit="1">1.21</let>
+      <let name="q0" unit="1">2.0</let>
+      <let name="G0" unit="Pa">112.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">2.6</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="fewa">
+      <blurb>Fe-Wadsleyite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="F0" unit="J/mol">-1367.0e3</let>
+      <let name="V0" unit="m^3/mol">42.80e-6</let>
+      <let name="K0" unit="Pa">169.0e9</let>
+      <let name="K0_p" unit="1">4.3</let>
+      <let name="θ0" unit="K">719.0</let>
+      <let name="γ0" unit="1">1.21</let>
+      <let name="q0" unit="1">2.0</let>
+      <let name="G0" unit="Pa">72.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">1.1</let>
+    </phase>
+
+    <interaction unit="J/mol" value="-4.3e3">
+      <phase ref="mgwa" /><phase ref="fewa" />
+    </interaction>
+  </phase>
+
+  <!--
+    Ringwoodite solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="ri">
+    <blurb>Ringwoodite</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="mgri">
+      <blurb>Mg-Ringwoodite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <let name="F0" unit="J/mol">-2021.0e3</let>
+      <let name="V0" unit="m^3/mol">39.49e-6</let>
+      <let name="K0" unit="Pa">185.0e9</let>
+      <let name="K0_p" unit="1">4.2</let>
+      <let name="θ0" unit="K">891.0</let>
+      <let name="γ0" unit="1">1.11</let>
+      <let name="q0" unit="1">2.4</let>
+      <let name="G0" unit="Pa">123.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">2.3</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="feri">
+      <blurb>Fe-Ringwoodite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="F0" unit="J/mol">-1357.0e3</let>
+      <let name="V0" unit="m^3/mol">41.86e-6</let>
+      <let name="K0" unit="Pa">213.0e9</let>
+      <let name="K0_p" unit="1">4.2</let>
+      <let name="θ0" unit="K">652.0</let>
+      <let name="γ0" unit="1">1.26</let>
+      <let name="q0" unit="1">2.4</let>
+      <let name="G0" unit="Pa">92.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">1.8</let>
+    </phase>
+
+    <interaction unit="J/mol" value="4.0e3">
+      <phase ref="mgri" /><phase ref="feri" />
+    </interaction>
+  </phase>
+
+  <!--
+    Orthopyroxene solution:
+    *  Fe <-> Mg <-> Ca substitution on site 1
+    *  MgSi <-> AlAl coupled substitution on site 2 and 3
+    *  Al,Si disorder on site 3
+    => assuming no entropy contribution from site 2
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="opx">
+    <blurb>Orthopyroxene</blurb>
+    <let name="allows-negative-components">True</let>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="en">
+      <blurb>Enstatite</blurb>
+      <formula>(Mg)(Mg)Si2O6</formula>
+
+      <let name="F0" unit="J/mol">-2916.5e3</let>
+      <let name="V0" unit="m^3/mol">62.68e-6</let>
+      <let name="K0" unit="Pa">107.0e9</let>
+      <let name="K0_p" unit="1">7.0</let>
+      <let name="θ0" unit="K">812.0</let>
+      <let name="γ0" unit="1">0.78</let>
+      <let name="q0" unit="1">3.4</let>
+      <let name="G0" unit="Pa">77.0e9</let>
+      <let name="G0_p" unit="1">1.5</let>
+      <let name="η0" unit="1">2.5</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="fs">
+      <blurb>Ferrosilite</blurb>
+      <formula>(Fe)(Fe)Si2O6</formula>
+
+      <let name="F0" unit="J/mol">-2225.5e3</let>
+      <let name="V0" unit="m^3/mol">65.94e-6</let>
+      <let name="K0" unit="Pa">101.0e9</let>
+      <let name="K0_p" unit="1">7.0</let>
+      <let name="θ0" unit="K">674.0</let>
+      <let name="γ0" unit="1">0.72</let>
+      <let name="q0" unit="1">3.4</let>
+      <let name="G0" unit="Pa">52.0e9</let>
+      <let name="G0_p" unit="1">1.5</let>
+      <let name="η0" unit="1">1.1</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="mgts">
+      <blurb>Mg-Tschermak</blurb>
+      <formula>(Mg)(Al)SiAlO6</formula>
+
+      <let name="F0" unit="J/mol">-3010.0e3</let>
+      <let name="V0" unit="m^3/mol">60.4e-6</let>
+      <let name="K0" unit="Pa">107.0e9</let>
+      <let name="K0_p" unit="1">7.0</let>
+      <let name="θ0" unit="K">794.0</let>
+      <let name="γ0" unit="1">0.78</let>
+      <let name="q0" unit="1">3.4</let>
+      <let name="G0" unit="Pa">90.0e9</let>
+      <let name="G0_p" unit="1">1.5</let>
+      <let name="η0" unit="1">2.4</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="odi">
+      <blurb>Ortho-Diopside</blurb>
+      <formula>(Ca)(Mg)Si2O6</formula>
+
+      <let name="F0" unit="J/mol">-2995.5e3</let>
+      <let name="V0" unit="m^3/mol">68.05e-6</let>
+      <let name="K0" unit="Pa">107.0e9</let>
+      <let name="K0_p" unit="1">7.0</let>
+      <let name="θ0" unit="K">721.0</let>
+      <let name="γ0" unit="1">0.78</let>
+      <let name="q0" unit="1">3.4</let>
+      <let name="G0" unit="Pa">59.0e9</let>
+      <let name="G0_p" unit="1">1.5</let>
+      <let name="η0" unit="1">1.4</let>
+    </phase>
+
+    <interaction unit="J/mol" value="21.9e3">
+      <phase ref="en" /><phase ref="odi" />
+    </interaction>
+    <interaction unit="J/mol" value="21.9e3">
+      <phase ref="mgts" /><phase ref="odi" />
+    </interaction>
+  </phase>
+
+  <!--
+    Clinopyroxene solution:
+    *  Mg <-> Ca substitution on site 1
+    *  Mg2 <-> NaAl coupled substitution on site 1 and 2
+    *  Mg <-> Fe substitution on site 2
+    *  MgSi2 <-> Al2Si coupled substitution on site 2 and 3
+    *  Al,Si disorder on site 3
+    => assuming no entropy contribution from site 2
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="cpx">
+    <blurb>Clinopyroxene</blurb>
+    <let name="allows-negative-components">True</let>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="di">
+      <blurb>Diopside</blurb>
+      <formula>(Ca)(Mg)(Si)2O6</formula>
+
+      <let name="F0" unit="J/mol">-3029.5e3</let>
+      <let name="V0" unit="m^3/mol">66.04e-6</let>
+      <let name="K0" unit="Pa">112.0e9</let>
+      <let name="K0_p" unit="1">5.2</let>
+      <let name="θ0" unit="K">782.0</let>
+      <let name="γ0" unit="1">0.96</let>
+      <let name="q0" unit="1">1.5</let>
+      <let name="G0" unit="Pa">67.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">1.6</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="he">
+      <blurb>Hedenbergite</blurb>
+      <formula>(Ca)(Fe)(Si)2O6</formula>
+
+      <let name="F0" unit="J/mol">-2674.0e3</let>
+      <let name="V0" unit="m^3/mol">67.865e-6</let>
+      <let name="K0" unit="Pa">119.0e9</let>
+      <let name="K0_p" unit="1">5.2</let>
+      <let name="θ0" unit="K">702.0</let>
+      <let name="γ0" unit="1">0.94</let>
+      <let name="q0" unit="1">1.5</let>
+      <let name="G0" unit="Pa">61.0e9</let>
+      <let name="G0_p" unit="1">1.2</let>
+      <let name="η0" unit="1">1.6</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="cen">
+      <blurb>Clinoenstatite</blurb>
+      <formula>(Mg)(Mg)(Si)2O6</formula>
+
+      <let name="F0" unit="J/mol">-2910.5e3</let>
+      <let name="V0" unit="m^3/mol">63.0e-6</let>
+      <let name="K0" unit="Pa">112.0e9</let>
+      <let name="K0_p" unit="1">5.2</let>
+      <let name="θ0" unit="K">806.0</let>
+      <let name="γ0" unit="1">0.96</let>
+      <let name="q0" unit="1">1.5</let>
+      <let name="G0" unit="Pa">79.0e9</let>
+      <let name="G0_p" unit="1">1.6</let>
+      <let name="η0" unit="1">1.7</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="cats">
+      <blurb>Ca-Tschermak</blurb>
+      <formula>(Ca)(Al)(Si0.5Al0.5)2O6</formula>
+
+      <let name="F0" unit="J/mol">-3118.5e3</let>
+      <let name="V0" unit="m^3/mol">63.575e-6</let>
+      <let name="K0" unit="Pa">112.0e9</let>
+      <let name="K0_p" unit="1">5.2</let>
+      <let name="θ0" unit="K">804.0</let>
+      <let name="γ0" unit="1">0.78</let>
+      <let name="q0" unit="1">1.5</let>
+      <let name="G0" unit="Pa">75.0e9</let>
+      <let name="G0_p" unit="1">1.5</let>
+      <let name="η0" unit="1">2.0</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="jd">
+      <blurb>Jadeite</blurb>
+      <formula>(Na)(Al)(Si)2O6</formula>
+
+      <let name="F0" unit="J/mol">-2855.0e3</let>
+      <let name="V0" unit="m^3/mol">60.51e-6</let>
+      <let name="K0" unit="Pa">142.0e9</let>
+      <let name="K0_p" unit="1">5.2</let>
+      <let name="θ0" unit="K">821.0</let>
+      <let name="γ0" unit="1">0.90</let>
+      <let name="q0" unit="1">0.4</let>
+      <let name="G0" unit="Pa">85.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">2.2</let>
+    </phase>
+
+    <interaction unit="J/mol" value="24.5e3">
+      <phase ref="cen" /><phase ref="di" />
+    </interaction>
+    <interaction unit="J/mol" value="24.5e3">
+      <phase ref="cen" /><phase ref="he" />
+    </interaction>
+    <interaction unit="J/mol" value="24.5e3">
+      <phase ref="cen" /><phase ref="cats" />
+    </interaction>
+    <interaction unit="J/mol" value="24.3e3">
+      <phase ref="jd" /><phase ref="di" />
+    </interaction>
+    <interaction unit="J/mol" value="24.3e3">
+      <phase ref="jd" /><phase ref="he" />
+    </interaction>
+    <interaction unit="J/mol" value="24.3e3">
+      <phase ref="jd" /><phase ref="cats" />
+    </interaction>
+  </phase>
+
+  <!--
+    HP-Clinopyroxene solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="hpcpx">
+    <blurb>HP-Clinopyroxene</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="hpcen">
+      <blurb>HP-Clinoenstatite</blurb>
+      <formula>(Mg)2Si2O6</formula>
+
+      <let name="F0" unit="J/mol">-2907.5e3</let>
+      <let name="V0" unit="m^3/mol">60.76e-6</let>
+      <let name="K0" unit="Pa">116.0e9</let>
+      <let name="K0_p" unit="1">6.2</let>
+      <let name="θ0" unit="K">823.0</let>
+      <let name="γ0" unit="1">1.12</let>
+      <let name="q0" unit="1">0.2</let>
+      <let name="G0" unit="Pa">88.0e9</let>
+      <let name="G0_p" unit="1">1.8</let>
+      <let name="η0" unit="1">2.1</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="hpcfs">
+      <blurb>HP-Clinoferrosilite</blurb>
+      <formula>(Fe)2Si2O6</formula>
+
+      <let name="F0" unit="J/mol">-2221.5e3</let>
+      <let name="V0" unit="m^3/mol">63.855e-6</let>
+      <let name="K0" unit="Pa">116.0e9</let>
+      <let name="K0_p" unit="1">6.2</let>
+      <let name="θ0" unit="K">690.0</let>
+      <let name="γ0" unit="1">1.12</let>
+      <let name="q0" unit="1">0.2</let>
+      <let name="G0" unit="Pa">68.0e9</let>
+      <let name="G0_p" unit="1">1.8</let>
+      <let name="η0" unit="1">0.7</let>
+    </phase>
+  </phase>
+
+  <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="capv">
+    <blurb>Ca-Perovskite</blurb>
+    <formula>CaSiO3</formula>
+
+    <let name="F0" unit="J/mol">-1464.0e3</let>
+    <let name="V0" unit="m^3/mol">27.45e-6</let>
+    <let name="K0" unit="Pa">236.0e9</let>
+    <let name="K0_p" unit="1">3.9</let>
+    <let name="θ0" unit="K">802.0</let>
+    <let name="γ0" unit="1">1.89</let>
+    <let name="q0" unit="1">0.9</let>
+    <let name="G0" unit="Pa">157.0e9</let>
+    <let name="G0_p" unit="1">2.2</let>
+    <let name="η0" unit="1">1.3</let>
+  </phase>
+
+  <!--
+    Akimotoite solution:
+    *  MgSi <-> AlAl coupled substitution on site 1 and 2
+    => no entropy contribution from site 2
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="ak">
+    <blurb>Akimotoite</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="mgak">
+      <blurb>Mg-Akimotoite</blurb>
+      <formula>(Mg)(Si)O3</formula>
+
+      <let name="F0" unit="J/mol">-1410.0e3</let>
+      <let name="V0" unit="m^3/mol">26.35e-6</let>
+      <let name="K0" unit="Pa">211.0e9</let>
+      <let name="K0_p" unit="1">5.6</let>
+      <let name="θ0" unit="K">928.0</let>
+      <let name="γ0" unit="1">1.19</let>
+      <let name="q0" unit="1">2.4</let>
+      <let name="G0" unit="Pa">132.0e9</let>
+      <let name="G0_p" unit="1">1.6</let>
+      <let name="η0" unit="1">2.8</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="feak">
+      <blurb>Fe-Akimotoite</blurb>
+      <formula>(Fe)(Si)O3</formula>
+
+      <let name="F0" unit="J/mol">-1067.0e3</let>
+      <let name="V0" unit="m^3/mol">26.85e-6</let>
+      <let name="K0" unit="Pa">211.0e9</let>
+      <let name="K0_p" unit="1">5.6</let>
+      <let name="θ0" unit="K">856.0</let>
+      <let name="γ0" unit="1">1.19</let>
+      <let name="q0" unit="1">2.4</let>
+      <let name="G0" unit="Pa">144.0e9</let>
+      <let name="G0_p" unit="1">1.6</let>
+      <let name="η0" unit="1">3.2</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="co">
+      <blurb>Corundum</blurb>
+      <formula>(Al)(Al)O3</formula>
+
+      <let name="F0" unit="J/mol">-1582.0e3</let>
+      <let name="V0" unit="m^3/mol">25.58e-6</let>
+      <let name="K0" unit="Pa">253.0e9</let>
+      <let name="K0_p" unit="1">4.3</let>
+      <let name="θ0" unit="K">933.0</let>
+      <let name="γ0" unit="1">1.32</let>
+      <let name="q0" unit="1">1.3</let>
+      <let name="G0" unit="Pa">163.0e9</let>
+      <let name="G0_p" unit="1">1.6</let>
+      <let name="η0" unit="1">2.8</let>
+    </phase>
+
+    <interaction unit="J/mol" value="42.0e3">
+      <phase ref="mgak" /><phase ref="co" />
+    </interaction>
+    <interaction unit="J/mol" value="52.0e3">
+      <phase ref="feak" /><phase ref="co" />
+    </interaction>
+  </phase>
+
+  <!--
+    Garnet solution:
+    *  Mg3 <-> Fe3 <-> Ca3 <-> Na2Al substitution on site 1 and 2
+    *  Al2 <-> AlSi <-> MgSi substitution on site 3 and 4
+    *  no site disorder
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="gt">
+    <blurb>Garnet</blurb>
+    <let name="allows-negative-components">True</let>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="py">
+      <blurb>Pyrope</blurb>
+      <formula>(Mg)3(Al)(Al)Si3O12</formula>
+
+      <let name="F0" unit="J/mol">-5940.0e3</let>
+      <let name="V0" unit="m^3/mol">113.08e-6</let>
+      <let name="K0" unit="Pa">170.0e9</let>
+      <let name="K0_p" unit="1">4.1</let>
+      <let name="θ0" unit="K">823.0</let>
+      <let name="γ0" unit="1">1.01</let>
+      <let name="q0" unit="1">1.4</let>
+      <let name="G0" unit="Pa">94.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">1.0</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="al">
+      <blurb>Almandine</blurb>
+      <formula>(Fe)3(Al)(Al)Si3O12</formula>
+
+      <let name="F0" unit="J/mol">-4932.0e3</let>
+      <let name="V0" unit="m^3/mol">115.43e-6</let>
+      <let name="K0" unit="Pa">174.0e9</let>
+      <let name="K0_p" unit="1">4.9</let>
+      <let name="θ0" unit="K">741.0</let>
+      <let name="γ0" unit="1">1.06</let>
+      <let name="q0" unit="1">1.4</let>
+      <let name="G0" unit="Pa">96.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">2.1</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="gr">
+      <blurb>Grossular</blurb>
+      <formula>(Ca)3(Al)(Al)Si3O12</formula>
+
+      <let name="F0" unit="J/mol">-6273.0e3</let>
+      <let name="V0" unit="m^3/mol">125.12e-6</let>
+      <let name="K0" unit="Pa">167.0e9</let>
+      <let name="K0_p" unit="1">3.9</let>
+      <let name="θ0" unit="K">823.0</let>
+      <let name="γ0" unit="1">1.05</let>
+      <let name="q0" unit="1">1.9</let>
+      <let name="G0" unit="Pa">109.0e9</let>
+      <let name="G0_p" unit="1">1.2</let>
+      <let name="η0" unit="1">2.4</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="mgmj">
+      <blurb>Mg-Majorite</blurb>
+      <formula>(Mg)3(Mg)(Si)Si3O12</formula>
+
+      <let name="F0" unit="J/mol">-5686.0e3</let>
+      <let name="V0" unit="m^3/mol">114.32e-6</let>
+      <let name="K0" unit="Pa">165.0e9</let>
+      <let name="K0_p" unit="1">4.2</let>
+      <let name="θ0" unit="K">835.0</let>
+      <let name="γ0" unit="1">0.98</let>
+      <let name="q0" unit="1">1.5</let>
+      <let name="G0" unit="Pa">85.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">1.0</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="jdmj">
+      <blurb>Jd-Majorite</blurb>
+      <formula>(Na0.66666666666666666Al0.33333333333333333)3(Al)(Si)Si3O12</formula>
+
+      <let name="F0" unit="J/mol">-5486.0e3</let>
+      <let name="V0" unit="m^3/mol">110.94e-6</let>
+      <let name="K0" unit="Pa">177.0e9</let>
+      <let name="K0_p" unit="1">4.1</let>
+      <let name="θ0" unit="K">832.0</let>
+      <let name="γ0" unit="1">1.01</let>
+      <let name="q0" unit="1">1.4</let>
+      <let name="G0" unit="Pa">125.0e9</let>
+      <let name="G0_p" unit="1">1.4</let>
+      <let name="η0" unit="1">3.2</let>
+    </phase>
+
+    <interaction unit="J/mol" value="15.0e3">
+      <phase ref="py" /><phase ref="gr" />
+    </interaction>
+    <interaction unit="J/mol" value="15.0e3">
+      <phase ref="mgmj" /><phase ref="gr" />
+    </interaction>
+  </phase>
+
+  <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="qtz">
+    <blurb>Beta Quartz</blurb>
+    <formula>SiO2</formula>
+
+    <let name="F0" unit="J/mol">-859.0e3</let>
+    <let name="V0" unit="m^3/mol">23.67e-6</let>
+    <let name="K0" unit="Pa">50.0e9</let>
+    <let name="K0_p" unit="1">15.8</let>
+    <let name="θ0" unit="K">816.0</let>
+    <let name="γ0" unit="1">0.00</let>
+    <let name="q0" unit="1">1.0</let>
+    <let name="G0" unit="Pa">45.0e9</let>
+    <let name="G0_p" unit="1">1.0</let>
+    <let name="η0" unit="1">2.4</let>
+  </phase>
+
+  <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="coes">
+    <blurb>Coesite</blurb>
+    <formula>SiO2</formula>
+
+    <let name="F0" unit="J/mol">-855.0e3</let>
+    <let name="V0" unit="m^3/mol">20.66e-6</let>
+    <let name="K0" unit="Pa">114.0e9</let>
+    <let name="K0_p" unit="1">4.0</let>
+    <let name="θ0" unit="K">856.0</let>
+    <let name="γ0" unit="1">0.39</let>
+    <let name="q0" unit="1">1.0</let>
+    <let name="G0" unit="Pa">62.0e9</let>
+    <let name="G0_p" unit="1">1.2</let>
+    <let name="η0" unit="1">2.4</let>
+  </phase>
+
+  <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="st">
+    <blurb>Stishovite</blurb>
+    <formula>SiO2</formula>
+
+    <let name="F0" unit="J/mol">-815.0e3</let>
+    <let name="V0" unit="m^3/mol">14.02e-6</let>
+    <let name="K0" unit="Pa">314.0e9</let>
+    <let name="K0_p" unit="1">3.8</let>
+    <let name="θ0" unit="K">1055.0</let>
+    <let name="γ0" unit="1">1.35</let>
+    <let name="q0" unit="1">2.9</let>
+    <let name="G0" unit="Pa">220.0e9</let>
+    <let name="G0_p" unit="1">1.9</let>
+    <let name="η0" unit="1">4.6</let>
+  </phase>
+
+  <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="sf">
+    <blurb>Seifertite</blurb>
+    <formula>SiO2</formula>
+
+    <let name="F0" unit="J/mol">-785.0e3</let>
+    <let name="V0" unit="m^3/mol">13.67e-6</let>
+    <let name="K0" unit="Pa">328.0e9</let>
+    <let name="K0_p" unit="1">4.0</let>
+    <let name="θ0" unit="K">1048.0</let>
+    <let name="γ0" unit="1">1.35</let>
+    <let name="q0" unit="1">2.9</let>
+    <let name="G0" unit="Pa">227.0e9</let>
+    <let name="G0_p" unit="1">1.8</let>
+    <let name="η0" unit="1">4.8</let>
+  </phase>
+
+  <!--
+    Perovskite solution:
+    *  Mg <-> Fe substitution on site 1
+    *  MgSi <-> Al2 coupled substitution on site 1 and 2
+    => no entropy contribution from site 2
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="pv">
+    <blurb>Perovskite</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="mgpv">
+      <blurb>Mg-Perovskite</blurb>
+      <formula>(Mg)(Si)O3</formula>
+
+      <let name="F0" unit="J/mol">-1367.0e3</let>
+      <let name="V0" unit="m^3/mol">24.45e-6</let>
+      <let name="K0" unit="Pa">251.0e9</let>
+      <let name="K0_p" unit="1">4.1</let>
+      <let name="θ0" unit="K">901.0</let>
+      <let name="γ0" unit="1">1.44</let>
+      <let name="q0" unit="1">1.4</let>
+      <let name="G0" unit="Pa">175.0e9</let>
+      <let name="G0_p" unit="1">1.7</let>
+      <let name="η0" unit="1">2.6</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="fepv">
+      <blurb>Fe-Perovskite</blurb>
+      <formula>(Fe)(Si)O3</formula>
+
+      <let name="F0" unit="J/mol">-1017.0e3</let>
+      <let name="V0" unit="m^3/mol">25.40e-6</let>
+      <let name="K0" unit="Pa">272.0e9</let>
+      <let name="K0_p" unit="1">4.1</let>
+      <let name="θ0" unit="K">765.0</let>
+      <let name="γ0" unit="1">1.44</let>
+      <let name="q0" unit="1">1.4</let>
+      <let name="G0" unit="Pa">132.0e9</let>
+      <let name="G0_p" unit="1">1.7</let>
+      <let name="η0" unit="1">1.9</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="alpv">
+      <blurb>Al-Perovskite (Rh2O3-II)</blurb>
+      <formula>(Al)(Al)O3</formula>
+
+      <let name="F0" unit="J/mol">-1516.0e3</let>
+      <let name="V0" unit="m^3/mol">25.49e-6</let>
+      <let name="K0" unit="Pa">228.0e9</let>
+      <let name="K0_p" unit="1">4.1</let>
+      <let name="θ0" unit="K">886.0</let>
+      <let name="γ0" unit="1">1.44</let>
+      <let name="q0" unit="1">1.4</let>
+      <let name="G0" unit="Pa">157.0e9</let>
+      <let name="G0_p" unit="1">1.7</let>
+      <let name="η0" unit="1">2.8</let>
+    </phase>
+
+    <interaction unit="J/mol" value="12.0e3">
+      <phase ref="mgpv" /><phase ref="alpv" />
+    </interaction>
+  </phase>
+
+  <!--
+    Post-Perovskite solution:
+    *  Mg <-> Fe substitution on site 1
+    *  MgSi <-> Al2 coupled substitution on site 1 and 2
+    => no entropy contribution from site 2
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="ppv">
+    <blurb>Post-Perovskite</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="mppv">
+      <blurb>Mg-Post-Perovskite</blurb>
+      <formula>(Mg)(Si)O3</formula>
+
+      <let name="F0" unit="J/mol">-1360.0e3</let>
+      <let name="V0" unit="m^3/mol">24.74e-6</let>
+      <let name="K0" unit="Pa">219.0e9</let>
+      <let name="K0_p" unit="1">4.0</let>
+      <let name="θ0" unit="K">849.0</let>
+      <let name="γ0" unit="1">1.72</let>
+      <let name="q0" unit="1">1.9</let>
+      <let name="G0" unit="Pa">134.0e9</let>
+      <let name="G0_p" unit="1">2.0</let>
+      <let name="η0" unit="1">3.0</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="fppv">
+      <blurb>Fe-Post-Perovskite</blurb>
+      <formula>(Fe)(Si)O3</formula>
+
+      <let name="F0" unit="J/mol">-938.0e3</let>
+      <let name="V0" unit="m^3/mol">25.70e-6</let>
+      <let name="K0" unit="Pa">219.0e9</let>
+      <let name="K0_p" unit="1">4.0</let>
+      <let name="θ0" unit="K">533.0</let>
+      <let name="γ0" unit="1">1.72</let>
+      <let name="q0" unit="1">1.9</let>
+      <let name="G0" unit="Pa">173.0e9</let>
+      <let name="G0_p" unit="1">2.0</let>
+      <let name="η0" unit="1">1.9</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="appv">
+      <blurb>Al-Post-Perovskite</blurb>
+      <formula>(Al)(Al)O3</formula>
+
+      <let name="F0" unit="J/mol">-1405.0e3</let>
+      <let name="V0" unit="m^3/mol">24.26e-6</let>
+      <let name="K0" unit="Pa">237.0e9</let>
+      <let name="K0_p" unit="1">4.0</let>
+      <let name="θ0" unit="K">847.0</let>
+      <let name="γ0" unit="1">1.72</let>
+      <let name="q0" unit="1">1.9</let>
+      <let name="G0" unit="Pa">185.0e9</let>
+      <let name="G0_p" unit="1">2.0</let>
+      <let name="η0" unit="1">2.3</let>
+    </phase>
+
+    <interaction unit="J/mol" value="21.0e3">
+      <phase ref="mppv" /><phase ref="appv" />
+    </interaction>
+  </phase>
+
+  <!--
+    Ferropericlase solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="fp">
+    <blurb>Ferropericlase</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="pe">
+      <blurb>Periclase</blurb>
+      <formula>(Mg)O</formula>
+
+      <let name="F0" unit="J/mol">-570.0e3</let>
+      <let name="V0" unit="m^3/mol">11.24e-6</let>
+      <let name="K0" unit="Pa">161.0e9</let>
+      <let name="K0_p" unit="1">3.9</let>
+      <let name="θ0" unit="K">772.0</let>
+      <let name="γ0" unit="1">1.48</let>
+      <let name="q0" unit="1">1.6</let>
+      <let name="G0" unit="Pa">130.0e9</let>
+      <let name="G0_p" unit="1">2.3</let>
+      <let name="η0" unit="1">2.3</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="wu">
+      <blurb>Wüstite</blurb>
+      <formula>(Fe)O</formula>
+
+      <let name="F0" unit="J/mol">-244.0e3</let>
+      <let name="V0" unit="m^3/mol">12.26e-6</let>
+      <let name="K0" unit="Pa">179.0e9</let>
+      <let name="K0_p" unit="1">4.9</let>
+      <let name="θ0" unit="K">454.0</let>
+      <let name="γ0" unit="1">1.54</let>
+      <let name="q0" unit="1">1.6</let>
+      <let name="G0" unit="Pa">47.0e9</let>
+      <let name="G0_p" unit="1">0.7</let>
+      <let name="η0" unit="1">0.6</let>
+    </phase>
+
+    <interaction unit="J/mol" value="13.0e3">
+      <phase ref="pe" /><phase ref="wu" />
+    </interaction>
+  </phase>
+
+  <!--
+    Ca-Ferrite solution:
+    *  Mg <-> Fe substitution on site 1
+    *  NaSi <-> MgAl coupled substitution on site 1 and 2
+    *  Al,Si disordered on site 2
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="cf">
+    <blurb>Ca-Ferrite</blurb>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="mgcf">
+      <blurb>Mg-Ca-Ferrite</blurb>
+      <formula>(Mg)(Al)AlO4</formula>
+
+      <let name="F0" unit="J/mol">-2129.0e3</let>
+      <let name="V0" unit="m^3/mol">36.18e-6</let>
+      <let name="K0" unit="Pa">211.0e9</let>
+      <let name="K0_p" unit="1">4.1</let>
+      <let name="θ0" unit="K">863.0</let>
+      <let name="γ0" unit="1">1.31</let>
+      <let name="q0" unit="1">1.0</let>
+      <let name="G0" unit="Pa">130.0e9</let>
+      <let name="G0_p" unit="1">1.8</let>
+      <let name="η0" unit="1">2.1</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="fecf">
+      <blurb>Fe-Ca-Ferrite</blurb>
+      <formula>(Fe)(Al)AlO4</formula>
+
+      <let name="F0" unit="J/mol">-1785.0e3</let>
+      <let name="V0" unit="m^3/mol">37.26e-6</let>
+      <let name="K0" unit="Pa">211.0e9</let>
+      <let name="K0_p" unit="1">4.1</let>
+      <let name="θ0" unit="K">740.0</let>
+      <let name="γ0" unit="1">1.31</let>
+      <let name="q0" unit="1">1.0</let>
+      <let name="G0" unit="Pa">148.0e9</let>
+      <let name="G0_p" unit="1">1.8</let>
+      <let name="η0" unit="1">2.7</let>
+    </phase>
+
+    <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="nacf">
+      <blurb>Na-Ca-Ferrite</blurb>
+      <formula>(Na)(Si)AlO4</formula>
+
+      <let name="F0" unit="J/mol">-1854.0e3</let>
+      <let name="V0" unit="m^3/mol">36.27e-6</let>
+      <let name="K0" unit="Pa">158.0e9</let>
+      <let name="K0_p" unit="1">4.3</let>
+      <let name="θ0" unit="K">823.0</let>
+      <let name="γ0" unit="1">1.17</let>
+      <let name="q0" unit="1">1.0</let>
+      <let name="G0" unit="Pa">121.0e9</let>
+      <let name="G0_p" unit="1">2.1</let>
+      <let name="η0" unit="1">1.6</let>
+    </phase>
+  </phase>
+
+  <phase type="EoS.DebyeModel.DebyeSolid, EoS.DebyeModel" id="ky">
+    <blurb>Kyanite</blurb>
+    <formula>Al2SiO5</formula>
+
+    <let name="F0" unit="J/mol">-2443.0e3</let>
+    <let name="V0" unit="m^3/mol">44.23e-6</let>
+    <let name="K0" unit="Pa">160.0e9</let>
+    <let name="K0_p" unit="1">4.0</let>
+    <let name="θ0" unit="K">943.0</let>
+    <let name="γ0" unit="1">0.93</let>
+    <let name="q0" unit="1">1.0</let>
+    <let name="G0" unit="Pa">95.0e9</let>
+    <let name="G0_p" unit="1">1.4</let>
+    <let name="η0" unit="1">2.3</let>
+  </phase>
+
+  <collection id="ALL">
+    <phase ref="plg" />
+    <phase ref="sps" />
+    <phase ref="ol" />
+    <phase ref="wa" />
+    <phase ref="ri" />
+    <phase ref="opx" />
+    <phase ref="cpx" />
+    <phase ref="hpcpx" />
+    <phase ref="capv" />
+    <phase ref="ak" />
+    <phase ref="gt" />
+    <phase ref="qtz" />
+    <phase ref="coes" />
+    <phase ref="st" />
+    <phase ref="sf" />
+    <phase ref="pv" />
+    <phase ref="ppv" />
+    <phase ref="fp" />
+    <phase ref="cf" />
+    <phase ref="ky" />
+  </collection>
+
+  <collection id="NOPPV">
+    <phase ref="plg" />
+    <phase ref="sps" />
+    <phase ref="ol" />
+    <phase ref="wa" />
+    <phase ref="ri" />
+    <phase ref="opx" />
+    <phase ref="cpx" />
+    <phase ref="hpcpx" />
+    <phase ref="capv" />
+    <phase ref="ak" />
+    <phase ref="gt" />
+    <phase ref="qtz" />
+    <phase ref="coes" />
+    <phase ref="st" />
+    <phase ref="sf" />
+    <phase ref="pv" />
+    <phase ref="fp" />
+    <phase ref="cf" />
+    <phase ref="ky" />
+  </collection>
+</module>

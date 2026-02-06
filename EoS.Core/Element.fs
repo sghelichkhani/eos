@@ -1,0 +1,132 @@
+// This file is part of EoS
+// Copyright (c) 2009-2025 Thomas Chust
+//               2009-2017 Bayerisches Geoinstitut, Bayreuth
+//               2009-2017 Ludwig-Maximilians-Universität, München
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// at your option any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module EoS.Chemistry.Element
+open FSharp.Data.UnitSystems.SI.UnitSymbols
+open EoS.Chemistry
+
+let private u = 1.0e-3<kg/mol>
+
+let H =  Element("H",    1, "Hydrogen", 1.00794 * u)
+let He = Element("He",   2, "Helium", 4.002602 * u)
+let Li = Element("Li",   3, "Lithium", 6.941 * u)
+let Be = Element("Be",   4, "Beryllium", 9.012182 * u)
+let B =  Element("B",    5, "Boron", 10.811 * u)
+let C =  Element("C",    6, "Carbon", 12.011 * u)
+let N =  Element("N",    7, "Nitrogen", 14.00674 * u)
+let O =  Element("O",    8, "Oxygen", 15.9994 * u)
+let F =  Element("F",    9, "Fluorine", 18.9984032 * u)
+let Ne = Element("Ne",  10, "Neon", 20.1797 * u)
+let Na = Element("Na",  11, "Sodium", 22.989768 * u)
+let Mg = Element("Mg",  12, "Magnesium", 24.3050 * u)
+let Al = Element("Al",  13, "Aluminium", 26.981539 * u)
+let Si = Element("Si",  14, "Silicon", 28.0855 * u)
+let P =  Element("P",   15, "Phosphorous", 30.973762 * u)
+let S =  Element("S",   16, "Sulfur", 32.066 * u)
+let Cl = Element("Cl",  17, "Chlorine", 35.4527 * u)
+let Ar = Element("Ar",  18, "Argon", 39.948 * u)
+let K =  Element("K",   19, "Potassium", 39.0983 * u)
+let Ca = Element("Ca",  20, "Calcium", 40.078 * u)
+let Sc = Element("Sc",  21, "Scandium", 44.955910 * u)
+let Ti = Element("Ti",  22, "Titanium", 47.88 * u)
+let V =  Element("V",   23, "Vanadium", 50.9415 * u)
+let Cr = Element("Cr",  24, "Chromium", 51.9961 * u)
+let Mn = Element("Mn",  25, "Manganese", 54.93805 * u)
+let Fe = Element("Fe",  26, "Iron", 55.847 * u)
+let Co = Element("Co",  27, "Cobalt", 58.93320 * u)
+let Ni = Element("Ni",  28, "Nickel", 58.6934 * u)
+let Cu = Element("Cu",  29, "Copper", 63.546 * u)
+let Zn = Element("Zn",  30, "Zinc", 65.39 * u)
+let Ga = Element("Ga",  31, "Gallium", 69.723 * u)
+let Ge = Element("Ge",  32, "Germanium", 72.61 * u)
+let As = Element("As",  33, "Arsenic", 74.92159 * u)
+let Se = Element("Se",  34, "Selenium", 78.96 * u)
+let Br = Element("Br",  35, "Bromine", 79.904 * u)
+let Kr = Element("Kr",  36, "Krypton", 83.80 * u)
+let Rb = Element("Rb",  37, "Rubidium", 85.4678 * u)
+let Sr = Element("Sr",  38, "Strontium", 87.62 * u)
+let Y =  Element("Y",   39, "Yttrium", 88.90585 * u)
+let Zr = Element("Zr",  40, "Zirconium", 91.224 * u)
+let Nb = Element("Nb",  41, "Niobium", 92.90638 * u)
+let Mo = Element("Mo",  42, "Molybdenum", 95.94 * u)
+let Tc = Element("Tc",  43, "Technetium", 98.9063 * u)
+let Ru = Element("Ru",  44, "Ruthenium", 101.07 * u)
+let Rh = Element("Rh",  45, "Rhodium", 102.90550 * u)
+let Pd = Element("Pd",  46, "Palladium", 106.42 * u)
+let Ag = Element("Ag",  47, "Silver", 107.8682 * u)
+let Cd = Element("Cd",  48, "Cadmium", 112.411 * u)
+let In = Element("In",  49, "Indium", 114.818 * u)
+let Sn = Element("Sn",  50, "Tin", 118.710 * u)
+let Sb = Element("Sb",  51, "Antimony", 121.757 * u)
+let Te = Element("Te",  52, "Tellurium", 127.60 * u)
+let I =  Element("I",   53, "Iodine", 126.90447 * u)
+let Xe = Element("Xe",  54, "Xenon", 131.29 * u)
+let Cs = Element("Cs",  55, "Caesium", 132.90540 * u)
+let Ba = Element("Ba",  56, "Barium", 137.327 * u)
+let La = Element("La",  57, "Lanthanum", 138.9055 * u)
+let Ce = Element("Ce",  58, "Cerium", 140.115 * u)
+let Pr = Element("Pr",  59, "Praesodymium", 140.90765 * u)
+let Nd = Element("Nd",  60, "Neodymium", 144.24 * u)
+let Pm = Element("Pm",  61, "Promethium", 146.9151 * u)
+let Sm = Element("Sm",  62, "Samarium", 150.36 * u)
+let Eu = Element("Eu",  63, "Europium", 151.965 * u)
+let Gd = Element("Gd",  64, "Gadolinium", 157.25 * u)
+let Tb = Element("Tb",  65, "Terbium", 158.92534 * u)
+let Dy = Element("Dy",  66, "Dysprosium", 162.50 * u)
+let Ho = Element("Ho",  67, "Holmium", 164.93032 * u)
+let Er = Element("Er",  68, "Erbium", 167.26 * u)
+let Tm = Element("Tm",  69, "Thulium", 168.93421 * u)
+let Yb = Element("Yb",  70, "Ytterbium", 173.04 * u)
+let Lu = Element("Lu",  71, "Lutetium", 174.967 * u)
+let Hf = Element("Hf",  72, "Hafnium", 178.49 * u)
+let Ta = Element("Ta",  73, "Tantalum", 180.9479 * u)
+let W =  Element("W",   74, "Tungsten", 183.84 * u)
+let Re = Element("Re",  75, "Rhenium", 186.207 * u)
+let Os = Element("Os",  76, "Osmium", 190.23 * u)
+let Ir = Element("Ir",  77, "Iridium", 192.22 * u)
+let Pt = Element("Pt",  78, "Platinum", 195.08 * u)
+let Au = Element("Au",  79, "Gold", 196.96654 * u)
+let Hg = Element("Hg",  80, "Mercury", 200.59 * u)
+let Tl = Element("Tl",  81, "Thallium", 204.3833 * u)
+let Pb = Element("Pb",  82, "Lead", 207.2 * u)
+let Bi = Element("Bi",  83, "Bismuth", 208.98037 * u)
+let Po = Element("Po",  84, "Polonium", 208.9824 * u)
+let At = Element("At",  85, "Astatine", 209.9871 * u)
+let Rn = Element("Rn",  86, "Radon", 222.0176 * u)
+let Fr = Element("Fr",  87, "Francium", 223.0197 * u)
+let Ra = Element("Ra",  88, "Radium", 226.0254 * u)
+let Ac = Element("Ac",  89, "Actinium", 227.0278 * u)
+let Th = Element("Th",  90, "Thorium", 232.0381 * u)
+let Pa = Element("Pa",  91, "Proactinium", 231.03588 * u)
+let U =  Element("U",   92, "Uranium", 238.0289 * u)
+let Np = Element("Np",  93, "Neptunium", 237.0482 * u)
+let Pu = Element("Pu",  94, "Plutonium", 244.0642 * u)
+let Am = Element("Am",  95, "Americium", 243.0614 * u)
+let Cm = Element("Cm",  96, "Curium", 247.0703 * u)
+let Bk = Element("Bk",  97, "Berkelium", 247.0703 * u)
+let Cf = Element("Cf",  98, "Californium", 251.0796 * u)
+let Es = Element("Es",  99, "Einsteinium", 252.0829 * u)
+let Fm = Element("Fm", 100, "Fermium", 257.0951 * u)
+let Md = Element("Md", 101, "Mendelevium", 258.0986 * u)
+let No = Element("No", 102, "Nobelium", 259.1009 * u)
+let Lr = Element("Lr", 103, "Lawrencium", 260.1053 * u)
+let Rf = Element("Rf", 104, "Rutherfordium", 261.1087 * u)
+let Db = Element("Db", 105, "Dubnium", 262.1138 * u)
+let Sg = Element("Sg", 106, "Seaborgium", 263.1182 * u)
+let Bh = Element("Bh", 107, "Bohrium", 262.1229 * u)

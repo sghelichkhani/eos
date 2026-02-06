@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This file is part of EoS
+  Copyright (c) 2009-2025 Thomas Chust
+                2009-2017 Bayerisches Geoinstitut, Bayreuth
+                2009-2017 Ludwig-Maximilians-Universität, München
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<module xmlns="http://chust.org/eos" id="FSR04">
+  <blurb>
+    Thermodynamic dataset taken from
+    Fabrichnaya, O.; Saxena, S. K.; Richet, P.; Westrum, E. F.
+    "Thermodynamic Data, Models, and Phase Diagrams in Multicomponent Oxide Systems"
+    Springer Verlag, 2004
+  </blurb>
+
+  <let name="p0" unit="Pa">1.0e5</let>
+  <let name="T0" unit="K">298.15</let>
+
+  <let name="allows-negative-components">False</let>
+  <let name="excludes-endmember-configuration-entropy">False</let>
+
+  <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="st">
+    <blurb>Stishovite</blurb>
+    <formula>SiO2</formula>
+
+    <let name="S0" unit="J/mol/K">24.642</let>
+    <let name="H0" unit="J/mol">-874.000e3</let>
+    <let name="Cp" unit="K → J/mol/K">85.78 - 3.605e6 T^-2 + 4.511e8 T^-3 - 345.5 T^-0.5</let>
+    <let name="α" unit="K → 1/K">2.3e-6 + 1.2e-8 T + 0.0062 T^-1 - 1.13 T^-2</let>
+    <let name="V0" unit="m^3/mol">14.01e-6</let>
+    <let name="β" unit="K → 1/Pa">1.954e-12 + 8.961e-16 T - 3.29e-19 T^2 + 2.331e-22 T^3</let>
+    <let name="K0_p" unit="1">6.0</let>
+    <let name="K0_pT" unit="1/K">1.0e-3</let>
+  </phase>
+
+  <!--
+    Olivine solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="ol">
+    <blurb>Olivine</blurb>
+
+    <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="fo">
+      <blurb>Forsterite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <let name="S0" unit="J/mol/K">95.600</let>
+      <let name="H0" unit="J/mol">-2174.140e3</let>
+      <let name="Cp" unit="K → J/mol/K">165.8 + 1.855e-2 T - 3971000 T^-2 + 2.861e8 T^-3 - 5610 T^-1</let>
+      <let name="α" unit="K → 1/K">2.01e-5 + 1.39e-8 T + 1.627e-3 T^-1 - 0.338 T^-2</let>
+      <let name="V0" unit="m^3/mol">43.67e-6</let>
+      <let name="β" unit="K → 1/Pa">7.427e-12 + 1.24e-15 T + 6.9e-20 T^2 + 1.702e-22 T^3</let>
+      <let name="K0_p" unit="1">5.2</let>
+      <let name="K0_pT" unit="1/K">2.0e-4</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="fa">
+      <blurb>Fayalite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="S0" unit="J/mol/K">151.000</let>
+      <let name="H0" unit="J/mol">-1744.340e3</let>
+      <let name="Cp" unit="K → J/mol/K">176.02 - 0.008808 T + 2.471e-5 T^2 - 3889000 T^-2</let>
+      <let name="α" unit="K → 1/K">7.692223e-5 + 2.78244e-9 T - 3.35255e-2 T^-1 + 5.5494 T^-2</let>
+      <let name="V0" unit="m^3/mol">46.28e-6</let>
+      <let name="β" unit="K → 1/Pa">7.40354e-12 + 1.77968e-15 T - 7.42829e-19 T^2 + 4.85647e-22 T^3</let>
+      <let name="K0_p" unit="1">5.25</let>
+      <let name="K0_pT" unit="1/K">2.2e-4</let>
+    </phase>
+  </phase>
+
+  <!--
+    Wadsleyite solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="wa">
+    <blurb>Wadsleyite</blurb>
+
+    <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="mgwa">
+      <blurb>Mg-Wadsleyite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <let name="S0" unit="J/mol/K">95.000</let>
+      <let name="H0" unit="J/mol">-2140.500e3</let>
+      <let name="Cp" unit="K → J/mol/K">172.9 + 1.129e-2 T - 1077100 T^-2 - 2.187e8 T^-3 - 13477 T^-1</let>
+      <let name="α" unit="K → 1/K">2.319e-5 + 9.04e-9 T - 3.966e-3 T^-1 + 0.7496 T^-2</let>
+      <let name="V0" unit="m^3/mol">40.54e-6</let>
+      <let name="β" unit="K → 1/Pa">5.5128e-12 + 9.2017e-16 T + 8.849e-20 T^2 + 1.1529e-22 T^3</let>
+      <let name="K0_p" unit="1">4.3</let>
+      <let name="K0_pT" unit="1/K">3.0e-4</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="fewa">
+      <blurb>Fe-Wadsleyite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="S0" unit="J/mol/K">141.800</let>
+      <let name="H0" unit="J/mol">-1468.000e3</let>
+      <let name="Cp" unit="K → J/mol/K">224.406 + 8.9184e-3 T + 1.559e7 T^-2 - 1.942e9 T^-3 - 5.7576e4 T^-1</let>
+      <let name="α" unit="K → 1/K">8.774e-5 - 2.609e-9 T - 3.398e-2 T^-1 + 4.435 T^-2</let>
+      <let name="V0" unit="m^3/mol">43.14e-6</let>
+      <let name="β" unit="K → 1/Pa">5.54e-12 + 7.947e-16 T + 7.069e-19 T^2 - 4.957e-23 T^3</let>
+      <let name="K0_p" unit="1">4.0</let>
+      <let name="K0_pT" unit="1/K">5.0e-4</let>
+    </phase>
+  </phase>
+
+  <!--
+    Ringwoodite solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="ri">
+    <blurb>Ringwoodite</blurb>
+
+    <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="mgri">
+      <blurb>Mg-Ringwoodite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <let name="S0" unit="J/mol/K">90.600</let>
+      <let name="H0" unit="J/mol">-2132.100e3</let>
+      <let name="Cp" unit="K → J/mol/K">158.56 + 1.22e-2 T - 1.2297e7 T^-2 + 1.4841e9 T^-3 + 7.9719e3 T^-1</let>
+      <let name="α" unit="K → 1/K">1.225e-5 + 1.104e-8 T + 2.496e-3 T^-1 - 0.511 T^-2</let>
+      <let name="V0" unit="m^3/mol">39.65e-6</let>
+      <let name="β" unit="K → 1/Pa">5.07778e-12 + 1.3371e-15 T - 2.9854e-19 T^2 + 2.7822e-22 T^3</let>
+      <let name="K0_p" unit="1">4.3</let>
+      <let name="K0_pT" unit="1/K">6.0e-4</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="feri">
+      <blurb>Fe-Ringwoodite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="S0" unit="J/mol/K">145.826</let>
+      <let name="H0" unit="J/mol">-1465.072e3</let>
+      <let name="Cp" unit="K → J/mol/K">167.86 + 0.028124 T - 5.6547e6 T^-2 + 7.8238e8 T^-3 - 3564.4 T^-1</let>
+      <let name="α" unit="K → 1/K">8.897e-5 + 2.803e-9 T - 3.426e-2 T^-1 + 3.813 T^-2</let>
+      <let name="V0" unit="m^3/mol">42.02e-6</let>
+      <let name="β" unit="K → 1/Pa">3.86e-12 + 3.978e-15 T - 6.304e-19 T^2 + 8.275e-23 T^3</let>
+      <let name="K0_p" unit="1">4.0</let>
+      <let name="K0_pT" unit="1/K">8.0e-4</let>
+    </phase>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="hpcen">
+    <blurb>HP-Clinoenstatite</blurb>
+    <formula>(Mg)2Si2O6</formula>
+
+    <let name="S0" unit="J/mol/K">65.300</let>
+    <let name="H0" unit="J/mol">-1544.823e3</let>
+    <let name="Cp" unit="K → J/mol/K">110.148 + 0.015219 T - 8.3416e6 T^-2 + 9.17225e8 T^-3 + 9.3904e3 T^-1</let>
+    <let name="α" unit="K → 1/K">0.387701887e-4 + 0.450015778e-8 T + 0.343917089e-3 T^-1 - 1.72362114 T^-2</let>
+    <let name="V0" unit="m^3/mol">30.9177e-6</let>
+    <let name="β" unit="K → 1/Pa">0.889581038e-11 + 0.135473202e-14 T + 0.317162053e-18 T^2 + 0.115235914e-21 T^3</let>
+    <let name="K0_p" unit="1">3.6</let>
+    <let name="K0_pT" unit="1/K">1.5e-4</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="pen">
+    <blurb>Protoenstatite</blurb>
+    <formula>MgSiO3</formula>
+
+    <let name="S0" unit="J/mol/K">66.960</let>
+    <let name="H0" unit="J/mol">-1545.790e3</let>
+    <let name="Cp" unit="K → J/mol/K">145.79 + 1.8986e-3 T - 1.374258e6 T^-2 + 4.58429e8 T^-3 - 2.01626e4 T^-1</let>
+    <let name="α" unit="K → 1/K">6.40239e-5 + 1.4439e-8 T - 0.0632425 T^-1 + 7.86955 T^-2</let>
+    <let name="V0" unit="m^3/mol">32.458e-6</let>
+    <let name="β" unit="K → 1/Pa">9.11066e-12 + 7.612e-17 T - 7.3162e-18 T^2 + 5.311578e-21 T^3</let>
+    <let name="K0_p" unit="1">6.6</let>
+    <let name="K0_pT" unit="1/K">1.5e-4</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="en">
+    <blurb>Enstatite</blurb>
+    <formula>MgSiO3</formula>
+
+    <let name="S0" unit="J/mol/K">66.270</let>
+    <let name="H0" unit="J/mol">-1546.290e3</let>
+    <let name="Cp" unit="K → J/mol/K">144.45 + 1.8821e-3 T - 1.35000e6 T^-2 + 4.612e8 T^-3 - 1.9380e4 T^-1</let>
+    <let name="α" unit="K → 1/K">2.66e-5 + 7.2e-9 T</let>
+    <let name="V0" unit="m^3/mol">31.346e-6</let>
+    <let name="β" unit="K → 1/Pa">9.3e-12 + 1.3584e-15 T + 3.1613e-19 T^2 + 1.1413e-22 T^3</let>
+    <let name="K0_p" unit="1">10.2</let>
+    <let name="K0_pT" unit="1/K">1.5e-4</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="mgmj">
+    <blurb>Mg-Majorite</blurb>
+    <formula>MgSiO3</formula>
+
+    <let name="S0" unit="J/mol/K">60.300</let>
+    <let name="H0" unit="J/mol">-1513.000e3</let>
+    <let name="Cp" unit="K → J/mol/K">176.8 - 6.44e5 T^-2 + 6.59e7 T^-3 - 1.603e3 T^-0.5</let>
+    <let name="α" unit="K → 1/K">1.1019e-5 + 7.5075e-9 T + 0.0060403 T^-1 - 1.0267 T^-2</let>
+    <let name="V0" unit="m^3/mol">28.5e-6</let>
+    <let name="β" unit="K → 1/Pa">5.8168e-12 + 2.521e-15 T - 1.1e-18 T^2 + 5.58636e-22 T^3</let>
+    <let name="K0_p" unit="1">4.0</let>
+    <let name="K0_pT" unit="1/K">1.0e-3</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="mgil">
+    <blurb>Mg-Ilmenite</blurb>
+    <formula>MgSiO3</formula>
+
+    <let name="S0" unit="J/mol/K">58.300</let>
+    <let name="H0" unit="J/mol">-1494.100e3</let>
+    <let name="Cp" unit="K → J/mol/K">125.5 + 5.303e-3 T - 6.282e6 T^-2 + 7.665e8 T^-3 - 3.04e3 T^-1</let>
+    <let name="α" unit="K → 1/K">2.2704e-5 + 6.8209e-9 T - 0.001809 T^-1 + 0.3851 T^-2</let>
+    <let name="V0" unit="m^3/mol">26.35e-6</let>
+    <let name="β" unit="K → 1/Pa">4.504e-12 + 8.2987e-16 T - 3.8777e-20 T^2 + 1.2095e-22 T^3</let>
+    <let name="K0_p" unit="1">4.0</let>
+    <let name="K0_pT" unit="1/K">3.0e-4</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.PolynomialSolid, EoS.PolynomialModel" id="mgpv">
+    <blurb>Mg-Perovskite</blurb>
+    <formula>MgSiO3</formula>
+
+    <let name="S0" unit="J/mol/K">63.600</let>
+    <let name="H0" unit="J/mol">-1449.500e3</let>
+    <let name="Cp" unit="K → J/mol/K">137.9 + 1.564e-3 T - 3.191e6 T^-2 + 7.192e8 T^-3 - 1.459e4 T^-1</let>
+    <let name="α" unit="K → 1/K">4.903e-5 - 2.307e-9 T - 0.01812 T^-1 + 2.543 T^-2</let>
+    <let name="V0" unit="m^3/mol">24.447e-6</let>
+    <let name="β" unit="K → 1/Pa">3.7184e-12 + 2.3496e-16 T + 2.2508e-19 T^2</let>
+    <let name="K0_p" unit="1">4.1</let>
+    <let name="K0_pT" unit="1/K">1.0e-4</let>
+  </phase>
+
+  <collection id="ALL">
+    <phase ref="st" />
+    <phase ref="ol" />
+    <phase ref="wa" />
+    <phase ref="ri" />
+    <phase ref="hpcen" />
+    <phase ref="pen" />
+    <phase ref="en" />
+    <phase ref="mgmj" />
+    <phase ref="mgil" />
+    <phase ref="mgpv" />
+  </collection>
+</module>

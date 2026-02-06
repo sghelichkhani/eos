@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="EoS.Core.Test/bin/Debug/net461/EoS.Core.Test.dll" />
+    <assembly path="EoS.DebyeModel.Test/bin/Debug/net461/EoS.DebyeModel.Test.dll" />
+    <assembly path="EoS.PolynomialModel.Test/bin/Debug/net461/EoS.PolynomialModel.Test.dll" />
+    <assembly path="EoS.Optimization.Test/bin/Debug/net461/EoS.Optimization.Test.dll" />
+  </Config>
+  <Config name="Release" binpathtype="Auto">
+    <assembly path="EoS.Core.Test/bin/Release/net461/EoS.Core.Test.dll" />
+    <assembly path="EoS.DebyeModel.Test/bin/Release/net461/EoS.DebyeModel.Test.dll" />
+    <assembly path="EoS.PolynomialModel.Test/bin/Release/net461/EoS.PolynomialModel.Test.dll" />
+    <assembly path="EoS.Optimization.Test/bin/Release/net461/EoS.Optimization.Test.dll" />
+  </Config>
+</NUnitProject>

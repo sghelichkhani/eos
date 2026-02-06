@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This file is part of EoS
+  Copyright (c) 2009-2025 Thomas Chust
+                2009-2017 Bayerisches Geoinstitut, Bayreuth
+                2009-2017 Ludwig-Maximilians-Universität, München
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<module xmlns="http://chust.org/eos" id="HHP13">
+  <blurb>
+    Thermodynamic dataset taken from
+
+    Holland, T. J. B.; Hudson, N. F. C.; Powell, R.; Harte, B.
+    "New Thermodynamic Models and Calculated Phase Equilibria in
+     NCFMAS for Basic and Ultrabasic Compositions through the Transition
+     Zone into the Uppermost Lower Mantle"
+    Journal of Petrology, 2013, 54, 1901-1920
+
+    and
+
+    Holland, T. J. B.; Powell, R.
+    "An improved and extended internally consistent thermodynamic
+     dataset for phases of petrological interest, involving a new
+     equation of state for solids"
+    Journal of Metamorphic Geology, 2011, 29, 333-383
+  </blurb>
+
+  <let name="p0" unit="Pa">1.0e5</let>
+  <let name="T0" unit="K">298.15</let>
+
+  <let name="allows-negative-components">False</let>
+  <let name="excludes-endmember-configuration-entropy">True</let>
+
+  <!--
+    Olivine solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="ol">
+    <blurb>Olivine</blurb>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="fo">
+      <blurb>Forsterite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <let name="H0" unit="J/mol">-2172.45e3</let>
+      <let name="S0" unit="J/mol/K">95.10</let>
+      <let name="V0" unit="m^3/mol">4.366e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.2333e3 + 0.1494e-2 T - 603.8e3 T^-2 - 1.8697e3 T^-0.5</let>
+      <let name="α0" unit="1/K">2.85e-5</let>
+      <let name="K0" unit="Pa">1285.0e8</let>
+      <let name="K0_p" unit="1">3.84</let>
+      <let name="K0_pp" unit="1/Pa">-0.0030e-8</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="fa">
+      <blurb>Fayalite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="H0" unit="J/mol">-1477.74e3</let>
+      <let name="S0" unit="J/mol/K">151.00</let>
+      <let name="V0" unit="m^3/mol">4.631e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.2011e3 + 1.7330e-2 T - 1960.6e3 T^-2 - 0.9009e3 T^-0.5</let>
+      <let name="α0" unit="1/K">2.82e-5</let>
+      <let name="K0" unit="Pa">1256.0e8</let>
+      <let name="K0_p" unit="1">4.68</let>
+      <let name="K0_pp" unit="1/Pa">-0.0037e-8</let>
+    </phase>
+  </phase>
+
+  <!--
+    Wadsleyite solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="wd">
+    <blurb>Wadsleyite</blurb>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="mwd">
+      <blurb>Mg-Wadsleyite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <let name="H0" unit="J/mol">-2138.08e3</let>
+      <let name="S0" unit="J/mol/K">93.90</let>
+      <let name="V0" unit="m^3/mol">4.051e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.2087e3 + 0.3942e-2 T - 1709.5e3 T^-2 - 1.3028e3 T^-0.5</let>
+      <let name="α0" unit="1/K">2.37e-5</let>
+      <let name="K0" unit="Pa">1726.0e8</let>
+      <let name="K0_p" unit="1">3.84</let>
+      <let name="K0_pp" unit="1/Pa">-0.0022e-8</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="fwd">
+      <blurb>Fe-Wadsleyite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="H0" unit="J/mol">-1467.92e3</let>
+      <let name="S0" unit="J/mol/K">146.00</let>
+      <let name="V0" unit="m^3/mol">4.321e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.2011e3 + 1.7330e-2 T - 1960.6e3 T^-2 - 0.9009e3 T^-0.5</let>
+      <let name="α0" unit="1/K">2.73e-5</let>
+      <let name="K0" unit="Pa">1690.0e8</let>
+      <let name="K0_p" unit="1">4.35</let>
+      <let name="K0_pp" unit="1/Pa">-0.0026e-8</let>
+    </phase>
+  </phase>
+
+  <!--
+    Ringwoodite solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="rw">
+    <blurb>Ringwoodite</blurb>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="mrw">
+      <blurb>Mg-Ringwoodite</blurb>
+      <formula>(Mg)2SiO4</formula>
+
+      <!--<let name="H0" unit="J/mol">-2126.84e3</let>-->
+      <let name="H0" unit="J/mol">-2127.66e3</let>
+      <let name="S0" unit="J/mol/K">90.00</let>
+      <let name="V0" unit="m^3/mol">3.949e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.2133e3 + 0.2690e-2 T - 1410.4e3 T^-2 - 1.4959e3 T^-0.5</let>
+      <let name="α0" unit="1/K">2.01e-5</let>
+      <let name="K0" unit="Pa">1781.0e8</let>
+      <let name="K0_p" unit="1">4.35</let>
+      <let name="K0_pp" unit="1/Pa">-0.0024e-8</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="frw">
+      <blurb>Fe-Ringwoodite</blurb>
+      <formula>(Fe)2SiO4</formula>
+
+      <let name="H0" unit="J/mol">-1471.76e3</let>
+      <let name="S0" unit="J/mol/K">140.00</let>
+      <let name="V0" unit="m^3/mol">4.203e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.1668e3 + 4.2610e-2 T - 1705.4e3 T^-2 - 0.5414e3 T^-0.5</let>
+      <let name="α0" unit="1/K">2.22e-5</let>
+      <let name="K0" unit="Pa">1977.0e8</let>
+      <let name="K0_p" unit="1">4.92</let>
+      <let name="K0_pp" unit="1/Pa">-0.0025e-8</let>
+    </phase>
+  </phase>
+
+  <!--
+    Perovskite solution:
+    *  Mg <-> Fe substitution on site 1
+    *  MgSi <-> Al2 coupled substitution on site 1 and 2
+    => no entropy contribution from site 2
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="pv">
+    <blurb>Perovskite</blurb>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="mpv">
+      <blurb>Mg-Perovskite</blurb>
+      <formula>(Mg)(Si)O3</formula>
+
+      <let name="H0" unit="J/mol">-1442.31e3</let>
+      <let name="S0" unit="J/mol/K">62.60</let>
+      <let name="V0" unit="m^3/mol">2.445e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.1493e3 + 0.2918e-2 T - 2983.0e3 T^-2 - 0.7991e3 T^-0.5</let>
+      <let name="α0" unit="1/K">1.87e-5</let>
+      <let name="K0" unit="Pa">2510.0e8</let>
+      <let name="K0_p" unit="1">4.14</let>
+      <let name="K0_pp" unit="1/Pa">-0.0016e-8</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="fpv">
+      <blurb>Fe-Perovskite</blurb>
+      <formula>(Fe)(Si)O3</formula>
+
+      <let name="H0" unit="J/mol">-1082.91e3</let>
+      <let name="S0" unit="J/mol/K">95.00</let>
+      <let name="V0" unit="m^3/mol">2.534e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.1332e3 + 1.0830e-2 T - 3661.4e3 T^-2 - 0.3147e3 T^-0.5</let>
+      <let name="α0" unit="1/K">1.87e-5</let>
+      <let name="K0" unit="Pa">2810.0e8</let>
+      <let name="K0_p" unit="1">4.14</let>
+      <let name="K0_pp" unit="1/Pa">-0.0016e-8</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="apv">
+      <blurb>Al-Perovskite</blurb>
+      <formula>(Al)(Al)O3</formula>
+
+      <let name="H0" unit="J/mol">-1619.99e3</let>
+      <let name="S0" unit="J/mol/K">51.80</let>
+      <let name="V0" unit="m^3/mol">2.540e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.1395e3 + 0.5890e-2 T - 2460.6e3 T^-2 - 0.5892e3 T^-0.5</let>
+      <let name="α0" unit="1/K">1.80e-5</let>
+      <let name="K0" unit="Pa">2030.0e8</let>
+      <let name="K0_p" unit="1">4.00</let>
+      <let name="K0_pp" unit="1/Pa">-0.0020e-8</let>
+    </phase>
+
+    <interaction unit="J/mol" value="12.0e3">
+      <phase ref="mpv" /><phase ref="fpv" />
+    </interaction>
+    <interaction unit="J/mol" value="20.0e3">
+      <phase ref="mpv" /><phase ref="apv" />
+    </interaction>
+    <interaction unit="J/mol" value="14.0e3">
+      <phase ref="fpv" /><phase ref="apv" />
+    </interaction>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="mak">
+    <blurb>Mg-Akimotoite</blurb>
+    <formula>(Mg)SiO3</formula>
+
+    <let name="H0" unit="J/mol">-1489.61e3</let>
+    <let name="S0" unit="J/mol/K">59.30</let>
+    <let name="V0" unit="m^3/mol">2.635e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.1478e3 + 0.2015e-2 T - 2395.0e3 T^-2 - 0.8018e3 T^-0.5</let>
+    <let name="α0" unit="1/K">2.12e-5</let>
+    <let name="K0" unit="Pa">2110.0e8</let>
+    <let name="K0_p" unit="1">4.55</let>
+    <let name="K0_pp" unit="1/Pa">-0.0022e-8</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="maj">
+    <blurb>Mg-Majorite</blurb>
+    <formula>(Mg)3(MgSi)Si3O12</formula>
+
+    <let name="H0" unit="J/mol">-6041.55e3</let>
+    <let name="S0" unit="J/mol/K">260.20</let>
+    <let name="V0" unit="m^3/mol">11.457e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.7136e3 - 0.0997e-2 T - 1158.2e3 T^-2 - 6.6223e3 T^-0.5</let>
+    <let name="α0" unit="1/K">1.83e-5</let>
+    <let name="K0" unit="Pa">1600.0e8</let>
+    <let name="K0_p" unit="1">4.56</let>
+    <let name="K0_pp" unit="1/Pa">-0.0028e-8</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="gr">
+    <blurb>Grossular</blurb>
+    <formula>(Ca)3(AlAl)Si3O12</formula>
+
+    <let name="H0" unit="J/mol">-6643.05e3</let>
+    <let name="S0" unit="J/mol/K">255.00</let>
+    <let name="V0" unit="m^3/mol">12.535e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.6260e3 - 5779.2e3 T^-2 - 4.0029e3 T^-0.5</let>
+    <let name="α0" unit="1/K">2.20e-5</let>
+    <let name="K0" unit="Pa">1720.0e8</let>
+    <let name="K0_p" unit="1">5.53</let>
+    <let name="K0_pp" unit="1/Pa">-0.0032e-8</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="en">
+    <blurb>Enstatite</blurb>
+    <formula>(Mg)2Si2O6</formula>
+
+    <let name="H0" unit="J/mol">-3090.10e3</let>
+    <let name="S0" unit="J/mol/K">132.50</let>
+    <let name="V0" unit="m^3/mol">6.262e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.3562e3 - 0.2990e-2 T - 596.9e3 T^-2 - 3.1853e3 T^-0.5</let>
+    <let name="α0" unit="1/K">2.27e-5</let>
+    <let name="K0" unit="Pa">1059.0e8</let>
+    <let name="K0_p" unit="1">8.65</let>
+    <let name="K0_pp" unit="1/Pa">-0.0082e-8</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="cen">
+    <blurb>Clinoenstatite</blurb>
+    <formula>(Mg)2Si2O6</formula>
+
+    <let name="H0" unit="J/mol">-3090.99e3</let>
+    <let name="S0" unit="J/mol/K">132.00</let>
+    <let name="V0" unit="m^3/mol">6.264e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.3060e3 - 0.3793e-2 T - 3041.7e3 T^-2 - 1.8521e3 T^-0.5</let>
+    <let name="α0" unit="1/K">2.11e-5</let>
+    <let name="K0" unit="Pa">1059.0e8</let>
+    <let name="K0_p" unit="1">8.65</let>
+    <let name="K0_pp" unit="1/Pa">-0.0082e-8</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="hen">
+    <blurb>HP-Clinoenstatite</blurb>
+    <formula>(Mg)2Si2O6</formula>
+
+    <let name="H0" unit="J/mol">-3082.61e3</let>
+    <let name="S0" unit="J/mol/K">131.70</let>
+    <let name="V0" unit="m^3/mol">6.099e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.3562e3 - 0.2990e-2 T - 596.9e3 T^-2 - 3.1853e3 T^-0.5</let>
+    <let name="α0" unit="1/K">2.26e-5</let>
+    <let name="K0" unit="Pa">1500.0e8</let>
+    <let name="K0_p" unit="1">5.50</let>
+    <let name="K0_pp" unit="1/Pa">-0.0036e-8</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="st">
+    <blurb>Stishovite</blurb>
+    <formula>SiO2</formula>
+
+    <let name="H0" unit="J/mol">-876.82e3</let>
+    <let name="S0" unit="J/mol/K">24.00</let>
+    <let name="V0" unit="m^3/mol">1.401e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.0681e3 + 0.6010e-2 T - 1978.2e3 T^-2 - 0.0821e3 T^-0.5</let>
+    <let name="α0" unit="1/K">1.58e-5</let>
+    <let name="K0" unit="Pa">3090.0e8</let>
+    <let name="K0_p" unit="1">4.60</let>
+    <let name="K0_pp" unit="1/Pa">-0.0015e-8</let>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="mscf">
+    <blurb>Mg-Ca-Ferrite</blurb>
+    <formula>(Mg)(MgSi)O4</formula>
+
+    <let name="H0" unit="J/mol">-2061.13e3</let>
+    <let name="S0" unit="J/mol/K">87.50</let>
+    <let name="V0" unit="m^3/mol">3.649e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.2133e3 + 0.2690e-2 T - 1410.4e3 T^-2 - 1.4959e3 T^-0.5</let>
+    <let name="α0" unit="1/K">2.01e-5</let>
+    <let name="K0" unit="Pa">1850.0e8</let>
+    <let name="K0_p" unit="1">4.00</let>
+    <let name="K0_pp" unit="1/Pa">-0.0017e-8</let>
+  </phase>
+
+  <!--
+    Ferropericlase solution:
+    *  Mg <-> Fe substitution
+  -->
+  <phase type="EoS.Phases.RegularSolution, EoS.Core" id="fp">
+    <blurb>Ferropericlase</blurb>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="per">
+      <blurb>Periclase</blurb>
+      <formula>(Mg)O</formula>
+
+      <let name="H0" unit="J/mol">-601.57e3</let>
+      <let name="S0" unit="J/mol/K">26.50</let>
+      <let name="V0" unit="m^3/mol">1.125e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.0605e3 + 0.0362e-2 T - 535.8e3 T^-2 - 0.2992e3 T^-0.5</let>
+      <let name="α0" unit="1/K">3.11e-5</let>
+      <let name="K0" unit="Pa">1616.0e8</let>
+      <let name="K0_p" unit="1">3.95</let>
+      <let name="K0_pp" unit="1/Pa">-0.0024e-8</let>
+    </phase>
+
+    <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="wus">
+      <blurb>Wüstite</blurb>
+      <formula>(Fe)O</formula>
+
+      <let name="H0" unit="J/mol">-262.24e3</let>
+      <let name="S0" unit="J/mol/K">58.60</let>
+      <let name="V0" unit="m^3/mol">1.206e-5</let>
+      <let name="Cp" unit="K → J/mol/K">0.0444e3 + 0.8280e-2 T - 1214.2e3 T^-2 + 0.1852e3 T^-0.5</let>
+      <let name="α0" unit="1/K">3.22e-5</let>
+      <let name="K0" unit="Pa">1520.0e8</let>
+      <let name="K0_p" unit="1">4.90</let>
+      <let name="K0_pp" unit="1/Pa">-0.0032e-8</let>
+    </phase>
+  </phase>
+
+  <phase type="EoS.PolynomialModel.HollandPowellSolid, EoS.PolynomialModel" id="cor">
+    <blurb>Corundum</blurb>
+    <formula>Al2O3</formula>
+
+    <let name="H0" unit="J/mol">-1675.25e3</let>
+    <let name="S0" unit="J/mol/K">50.90</let>
+    <let name="V0" unit="m^3/mol">2.558e-5</let>
+    <let name="Cp" unit="K → J/mol/K">0.1395e3 + 0.5890e-2 T - 2460.6e3 T^-2 - 0.5892e3 T^-0.5</let>
+    <let name="α0" unit="1/K">1.80e-5</let>
+    <let name="K0" unit="Pa">2450.0e8</let>
+    <let name="K0_p" unit="1">4.34</let>
+    <let name="K0_pp" unit="1/Pa">-0.0017e-8</let>
+  </phase>
+
+  <collection id="ALL">
+    <phase ref="ol" />
+    <phase ref="wd" />
+    <phase ref="rw" />
+    <phase ref="pv" />
+    <phase ref="mak" />
+    <phase ref="maj" />
+    <phase ref="en" />
+    <phase ref="cen" />
+    <phase ref="hen" />
+    <phase ref="st" />
+    <phase ref="mscf" />
+    <phase ref="fp" />
+  </collection>
+</module>

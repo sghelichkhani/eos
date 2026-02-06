@@ -1,0 +1,66 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install native dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          libopenmpi-dev \
+          openmpi-bin \
+          libudunits2-dev
+
+    - name: Build LPSolve native library
+      run: |
+        make -C LPSolve CC=cc CONF=Release ARCH=linux-x64
+
+    - name: Build MPIGlue native library
+      run: |
+        make -C MPIGlue CC=mpicc CONF=Release ARCH=linux-x64
+
+    - name: Restore .NET dependencies
+      run: dotnet restore EoS.sln
+
+    - name: Build solution
+      run: dotnet build EoS.sln -c Release --no-restore
+
+    - name: Copy native libraries for tests
+      run: |
+        # Find all test output directories and copy native libs there
+        for testdir in EoS.*.Test/bin/Release/net8.0; do
+          if [ -d "$testdir" ]; then
+            cp LPSolve/bin/Release/linux-x64/liblpsolve55.so "$testdir/" 2>/dev/null || true
+            cp MPIGlue/bin/Release/linux-x64/libmpiglue.so "$testdir/" 2>/dev/null || true
+          fi
+        done
+
+    - name: Run tests
+      run: dotnet test EoS.sln -c Release --no-build --verbosity normal
+      env:
+        LD_LIBRARY_PATH: ${{ github.workspace }}/LPSolve/bin/Release/linux-x64:${{ github.workspace }}/MPIGlue/bin/Release/linux-x64
+
+    - name: Upload native libraries as artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: native-libraries-linux-x64
+        path: |
+          LPSolve/bin/Release/linux-x64/liblpsolve55.so
+          MPIGlue/bin/Release/linux-x64/libmpiglue.so

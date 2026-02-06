@@ -1,0 +1,15 @@
+syntax: glob
+bin/
+doc/
+obj/
+scratch/
+EoS-*/
+*.zip
+*.tar.gz
+*.tar.bz2
+*.exe
+*.dll
+*.mdb
+*.userprefs
+TestResult.xml
+EoS.Test.VisualState.xml
