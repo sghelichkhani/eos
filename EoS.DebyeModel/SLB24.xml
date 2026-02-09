@@ -1681,4 +1681,63 @@
       <let name="η0" unit="1">3.79074</let>
     </phase>
   </phase>
+  <collection id="ALL">
+    <phase ref="ol"/>
+    <phase ref="opx"/>
+    <phase ref="cpx"/>
+    <phase ref="gt"/>
+    <phase ref="pv"/>
+    <phase ref="ppv"/>
+    <phase ref="sps"/>
+    <phase ref="wa"/>
+    <phase ref="ri"/>
+    <phase ref="plg"/>
+    <phase ref="cf"/>
+    <phase ref="mw"/>
+    <phase ref="il"/>
+    <phase ref="nal"/>
+    <phase ref="c2c"/>
+    <phase ref="st"/>
+    <phase ref="coes"/>
+    <phase ref="qtz"/>
+    <phase ref="capv"/>
+    <phase ref="ky"/>
+    <phase ref="neph"/>
+    <phase ref="fea"/>
+    <phase ref="fee"/>
+    <phase ref="feg"/>
+    <phase ref="wo"/>
+    <phase ref="pwo"/>
+    <phase ref="apbo"/>
+    <phase ref="lppv"/>
+  </collection>
+  <collection id="NOPPV">
+    <phase ref="ol"/>
+    <phase ref="opx"/>
+    <phase ref="cpx"/>
+    <phase ref="gt"/>
+    <phase ref="pv"/>
+    <phase ref="sps"/>
+    <phase ref="wa"/>
+    <phase ref="ri"/>
+    <phase ref="plg"/>
+    <phase ref="cf"/>
+    <phase ref="mw"/>
+    <phase ref="il"/>
+    <phase ref="nal"/>
+    <phase ref="c2c"/>
+    <phase ref="st"/>
+    <phase ref="coes"/>
+    <phase ref="qtz"/>
+    <phase ref="capv"/>
+    <phase ref="ky"/>
+    <phase ref="neph"/>
+    <phase ref="fea"/>
+    <phase ref="fee"/>
+    <phase ref="feg"/>
+    <phase ref="wo"/>
+    <phase ref="pwo"/>
+    <phase ref="apbo"/>
+    <phase ref="lppv"/>
+  </collection>
 </module>
