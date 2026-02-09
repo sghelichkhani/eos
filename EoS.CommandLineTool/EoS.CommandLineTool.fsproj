@@ -53,6 +53,7 @@
 
   <ItemGroup>
     <PackageReference Include="Eto.Forms" Version="2.10.1" />
+    <PackageReference Include="Murphy.ByteString" Version="4.0.4.*" />
   </ItemGroup>
 
   <ItemGroup Condition="('$(TargetFramework)'=='net8.0') And ('$(RuntimeIdentifier)'=='linux-x64')">

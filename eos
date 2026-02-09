@@ -1,18 +1,25 @@
 #!/bin/bash
-# MMA-EoS launcher script for macOS
+# MMA-EoS launcher script (development convenience)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Detect architecture
-if [[ $(uname -m) == "arm64" ]]; then
-    ARCH="osx-arm64"
-else
-    ARCH="osx-x64"
-fi
+# Detect platform and architecture
+case "$(uname -s)-$(uname -m)" in
+    Darwin-arm64)  ARCH="osx-arm64";  LIBPATH_VAR="DYLD_LIBRARY_PATH" ;;
+    Darwin-x86_64) ARCH="osx-x64";    LIBPATH_VAR="DYLD_LIBRARY_PATH" ;;
+    Linux-x86_64)  ARCH="linux-x64";  LIBPATH_VAR="LD_LIBRARY_PATH" ;;
+    Linux-aarch64) ARCH="linux-arm64"; LIBPATH_VAR="LD_LIBRARY_PATH" ;;
+    *) echo "Unsupported platform: $(uname -s)-$(uname -m)" >&2; exit 1 ;;
+esac
 
 PUBLISH_DIR="$SCRIPT_DIR/EoS.CommandLineTool/bin/Release/net8.0/$ARCH/publish"
 
-# For self-contained .NET apps, help find the runtime libraries
-export DYLD_LIBRARY_PATH="$PUBLISH_DIR:$DYLD_LIBRARY_PATH"
+if [[ ! -d "$PUBLISH_DIR" ]]; then
+    echo "Error: publish directory not found at $PUBLISH_DIR" >&2
+    echo "Run './install-minimal.sh' first to build." >&2
+    exit 1
+fi
+
+export ${LIBPATH_VAR}="$PUBLISH_DIR:${!LIBPATH_VAR}"
 unset DOTNET_ROOT
 
 exec "$PUBLISH_DIR/eos" "$@"

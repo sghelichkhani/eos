@@ -189,7 +189,7 @@ let init (comm : Lazy<Communicator>) =
 
     let ps = Array.ofSeq ps
     let Ts = Array.ofSeq Ts
-    let xs = Array2D.zeroCreate ps.Length Ts.Length
+    let xs = Array2D.create ps.Length Ts.Length [||]
     for x in newReader() |> readLines do
       let p = x[0] * 1.0<Pa>
       let T = x[1] * 1.0<K>
