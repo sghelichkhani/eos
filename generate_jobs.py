@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Generate PBS job scripts for all combinations of Debye models and compositions.
+Generate PBS job scripts for property calculations (prop-only).
 
-Each job runs the combined opti + prop workflow for a single (model, formula) pair.
+Assumes optimization outputs (opti_clean.out) already exist for each combination.
+Each job runs only the prop step for a single (model, formula) pair.
 
 Usage:
     python3 generate_jobs.py
@@ -54,7 +55,7 @@ PBS_PROJECT = "xd2"
 PBS_QUEUE = "normal"
 PBS_NCPUS = 48
 PBS_MEM = "192GB"
-PBS_WALLTIME = "10:00:00"
+PBS_WALLTIME = "2:00:00"  # Reduced since prop-only is faster than opti+prop
 PBS_STORAGE = "scratch/xd2"
 
 
@@ -65,8 +66,8 @@ def make_job_name(model, formula):
 
 
 def make_script(model, formula, eos_dir, output_base):
-    """Generate a PBS job script for a single (model, formula) combination."""
-    job_name = make_job_name(model, formula)
+    """Generate a PBS job script for property calculation only (assumes opti_clean.out exists)."""
+    job_name = make_job_name(model, formula) + "_prop"
     output_dir = f"{output_base}/output-{model}/{formula}"
 
     script = f"""#!/bin/bash
@@ -89,37 +90,23 @@ module load openmpi/4.0.7
 EOS_DIR="{eos_dir}"
 OUTPUT_DIR="{output_dir}"
 
-mkdir -p "$OUTPUT_DIR"
-
 echo "=== Job: {job_name} ==="
 echo "Model:   {model}"
 echo "Formula: {formula}"
 echo "Started: $(date)"
 echo ""
 
-# ── Step 1: Optimization ──────────────────────────────────────────
-echo "Running optimization..."
-mpiexec -np {NPROCS} "$EOS_DIR/eos" opti \\
-    -db="{model}" \\
-    -P="{P_START}" \\
-    -toP="{P_END}" \\
-    -nP={NP} \\
-    -T="{T_START}" \\
-    -toT="{T_END}" \\
-    -nT={NT} \\
-    -bulk="{formula}" \\
-    -o="p,T,x" \\
-    > "$OUTPUT_DIR/opti.out"
+# Check that cleaned optimization output exists
+if [ ! -f "$OUTPUT_DIR/opti_clean.out" ]; then
+    echo "ERROR: $OUTPUT_DIR/opti_clean.out not found"
+    echo "Please run optimization first"
+    exit 1
+fi
 
-echo "Optimization complete."
-
-# ── Step 2: Clean optimization output ─────────────────────────────
-# Remove ANSI escape sequences, keep only comment and data lines
-sed 's/\\x1b\\[[^m]*m\\|\\x1b\\[[?][0-9]*[a-zA-Z]\\|\\x1b=//g' \\
-    "$OUTPUT_DIR/opti.out" | grep -E '^#|^[0-9]' > "$OUTPUT_DIR/opti_clean.out"
-
-# ── Step 3: Property calculation ──────────────────────────────────
+# ── Property Calculation ──────────────────────────────────────────
 echo "Running property calculation..."
+echo "Input: $OUTPUT_DIR/opti_clean.out"
+
 mpiexec -np {NPROCS} "$EOS_DIR/eos" prop \\
     -db="{model}" \\
     -x="$OUTPUT_DIR/opti_clean.out" \\
@@ -132,11 +119,9 @@ mpiexec -np {NPROCS} "$EOS_DIR/eos" prop \\
     -o="{OUTPUT_PROPERTIES}" \\
     > "$OUTPUT_DIR/prop.out"
 
-rm -f "$OUTPUT_DIR/opti_clean.out"
-
 echo ""
 echo "Finished: $(date)"
-echo "Output:   $OUTPUT_DIR/{{opti,prop}}.out"
+echo "Output:   $OUTPUT_DIR/prop.out"
 """
     return script
 
